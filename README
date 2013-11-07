@@ -1,0 +1,6 @@
+How to start GeoChat in development:
+
+1) cd into geochat root directory
+ - cd geochat
+2) start the geochat server
+ - nodejs app.js
