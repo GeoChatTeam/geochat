@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/chat.css'/>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <script>
+            $(function(){
+                var tabs=$("#tabs").tabs();
+                tabs.find( ".ui-tabs-nav" ).sortable({
+                    axis: "x",
+                    stop: function() {
+                        tabs.tabs( "refresh" );
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="tabs" id="stylized">
+            <ul>
+                <li><a href="#tabs-1">Nearby</a></li>
+                <li><a href="#tabs-2">Building</a></li>
+            </ul>
+            <div id="tabs-1">
+                <p>This should be working.</p>
+            </div>
+            <div id="tabs-2">
+                <p>But if this is visible it isn't</p>
+            </div>
+        </div>
+    </body>
+</html>
