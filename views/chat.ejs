@@ -7,7 +7,7 @@
         <script>
             $(function(){
                 var tabs=$("#tabs").tabs();
-                tabs.find( ".ui-tabs-nav" ).sortable({
+                tabs.find(".ui-tabs-nav").sortable({
                     axis: "x",
                     stop: function() {
                         tabs.tabs( "refresh" );
@@ -17,8 +17,9 @@
         </script>
     </head>
     <body>
-        <div class="tabs" id="stylized">
+        <div id="tabs">
             <ul>
+                <!--<\%=tabs>-->
                 <li><a href="#tabs-1">Nearby</a></li>
                 <li><a href="#tabs-2">Building</a></li>
             </ul>
