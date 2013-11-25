@@ -15,6 +15,17 @@
                 });
             });
         </script>
+        
+	<script src="http://localhost:8080/socket.io/socket.io.js"></script>
+	<script src="js/PresenceClient.js"></script>
+	
+	<script>
+	  var socket = io.connect('http://localhost:8080');
+	  socket.on('news', function (data) {
+		console.log(data);
+		socket.emit('my other event', { my: 'data' });
+	  });
+	</script>
     </head>
     <body>
         <div id="tabs">
@@ -31,4 +42,15 @@
             </div>
         </div>
     </body>
+</html>
+<head>
+
+</head>
+<body>
+	<form>
+		<input type="text" />
+		<input type="submit" />
+	</form>
+	
+</body>
 </html>

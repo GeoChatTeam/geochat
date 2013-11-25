@@ -1,10 +1,6 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var chat = require('./routes/chat');
+var UserPool = require('./routes/UserPool');
 var http = require('http');
 var path = require('path');
 
@@ -29,7 +25,19 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', chat.index);
-app.get('/chat',chat.chat);
+app.get('/chat', chat.chat);
+
+app.post('/UserPool/connect', UserPool.connect);
+app.post('/UserPool/disconnect', UserPool.disconnect);
+
+var io = require('socket.io').listen(8080);
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
