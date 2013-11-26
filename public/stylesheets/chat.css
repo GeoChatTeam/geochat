@@ -54,6 +54,7 @@ current tab
     padding: 1em 1.4em;
     background: none;
     margin-top: 23px;
+    margin-bottom: 60%;
     border-top:solid 2px #b7ddf2;
 }
 ul{
@@ -65,16 +66,30 @@ ul{
 }
 #chat{
     overflow: scroll;
-    height: 80%;
+    height: 90%;
     width: 70%;
     background-color: #ffffff;
     border: solid 2px #b7ddf2;
+    float: left;
 }
 #userList{
-    margin-left: 72%;
+    margin-left: 8px;
     overflow: scroll;
-    height: 50%;
+    height: 44%;
     width: 28%;
     background-color: #ffffff;
     border: solid 2px #b7ddf2;
+    white-space: nowrap;
+    float: left;
+}
+#roomList{
+    margin-left: 8px;
+    margin-top: 8px;
+    overflow: scroll;
+    height: 44%;
+    width: 28%;
+    background-color: #ffffff;
+    border: solid 2px #b7ddf2;
+    white-space: nowrap;
+    float: left;
 }
