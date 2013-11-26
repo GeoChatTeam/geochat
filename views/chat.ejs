@@ -1,56 +1,52 @@
 <html>
-    <head>
-        <title><%= title %></title>
-        <link rel='stylesheet' href='/stylesheets/chat.css'/>
-        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-        <script>
-            $(function(){
-                var tabs=$("#tabs").tabs();
-                tabs.find(".ui-tabs-nav").sortable({
-                    axis: "x",
-                    stop: function() {
-                        tabs.tabs( "refresh" );
-                    }
-                });
-            });
-        </script>
-        
-	<script src="http://localhost:8080/socket.io/socket.io.js"></script>
-	<script src="js/PresenceClient.js"></script>
-	
-	<script>
-	  var socket = io.connect('http://localhost:8080');
-	  socket.on('news', function (data) {
-		console.log(data);
-		socket.emit('my other event', { my: 'data' });
-	  });
-	</script>
-    </head>
-    <body>
-        <div id="tabs">
-            <ul>
-                <!--<\%=tabs>-->
-                <li><a href="#tabs-1">Nearby</a></li>
-                <li><a href="#tabs-2">Building</a></li>
-            </ul>
-            <div id="tabs-1">
-                <p>This should be working.</p>
-            </div>
-            <div id="tabs-2">
-                <p>But if this is visible it isn't</p>
-            </div>
-        </div>
-    </body>
-</html>
 <head>
-
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/chat.css'/>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script>
+        $(function(){
+            var tabs=$("#tabs").tabs();
+            tabs.find(".ui-tabs-nav").sortable({
+                axis: "x",
+                stop: function() {
+                    tabs.tabs( "refresh" );
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-	<form>
-		<input type="text" />
-		<input type="submit" />
-	</form>
-	
+<div id="tabs">
+    <ul>
+        <!--<\%=tabs>-->
+        <li><a href="#tabs-1">Nearby</a></li>
+        <li><a href="#tabs-2">Building</a></li>
+    </ul>
+    <div id="tabs-1">
+        <ul>
+            <div id="chat">
+                <p><b style="color: red">User: </b>This is a test of if the scroll box works, thus it needs a ton of text and I really don't feel like looking up lorem
+                    ipsum so I'm just writing stuff. On the subject of lorem ipsum, Cicero was a very strange writer even for Latin. The
+                    language itself is a bit problematic since it can kind of ignores any conventions as far as sentence structure but
+                    they kind of make sense, clauses are together and all that. Cicero just sort of does what he wants, he'll have parts
+                    of one clause in another and there'll even be some bleeding between sentences. It's really awkward to translate. I have
+                    it working but now I need to get the user list to be in line, which is annoying because it refuses to comply with all
+                    of my attempts</p>
+            </div>
+            <div id="userList">
+
+            </div>
+        </ul>
+    </div>
+    <div id="tabs-2">
+        <div id="chat">
+            <p>But if this is visible it isn't</p>
+        </div>
+        <div id="userList">
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -45,10 +45,36 @@ body{
 .ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active a {
     cursor: pointer;
 }
+/*
+current tab
+*/
 .ui-tabs .ui-tabs-panel {
     display: block;
     border-width: 0;
     padding: 1em 1.4em;
     background: none;
-    border:solid 2px #b7ddf2;
+    margin-top: 23px;
+    border-top:solid 2px #b7ddf2;
+}
+ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: relative;
+    border-bottom-width: 0;
+}
+#chat{
+    overflow: scroll;
+    height: 80%;
+    width: 70%;
+    background-color: #ffffff;
+    border: solid 2px #b7ddf2;
+}
+#userList{
+    margin-left: 72%;
+    overflow: scroll;
+    height: 50%;
+    width: 28%;
+    background-color: #ffffff;
+    border: solid 2px #b7ddf2;
 }
