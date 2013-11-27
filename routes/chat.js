@@ -3,6 +3,10 @@ exports.index = function(req, res){
 };
 
 exports.chat=function(req,res){
-    res.render('chat.ejs',{title:'geochat'});
+	if(!req.session.user_id){
+		res.redirect('/');
+	} else {
+		res.render('chat.ejs');
+	}
 }
 

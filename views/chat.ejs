@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title><%= title %></title>
+    <title>geochat</title>
     <link rel='stylesheet' href='/stylesheets/chat.css'/>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -15,6 +15,20 @@
             });
         });
     </script>
+    <script src="/socket.io/socket.io.js"></script>
+	
+	<script>
+		var socket = io.connect('http://localhost:3000');
+		socket.on('message', function (data) {
+			//display the message
+		});
+		
+		jQuery('#chat_thing').on('submit', function(){
+			var data = {type: 'blah', content: 'blah'}
+			socket.emit('message', data);
+		});
+	</script>
+    
 </head>
 <body>
 <div id="tabs">

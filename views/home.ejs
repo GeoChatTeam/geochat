@@ -9,14 +9,29 @@
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
     <div id="stylized" class="myform">
-<form id="form" name="form" method="post" action="index.html">
-<h1>Sign-up form</h1>
+<form id="form" name="form" method="post" action="/login">
+<h1>Login form</h1>
 <p>This is the basic look of my form without table</p>
 
-<label>Name
-<span class="small">Add your name</span>
+<label>Email
+<span class="small">Add a valid address</span>
 </label>
-<input type="text" name="name" id="name" />
+<input type="text" name="email" id="email" />
+
+<label>Password
+</label>
+<input type="text" name="password" id="password" />
+
+<button type="submit">Sign-up</button>
+<div class="spacer"></div>
+
+</form>
+
+<hr>
+
+<form id="form" name="form" method="post" action="/register">
+<h1>Sign-up form</h1>
+<p>This is the basic look of my form without table</p>
 
 <label>Email
 <span class="small">Add a valid address</span>
@@ -28,12 +43,17 @@
 </label>
 <input type="text" name="password" id="password" />
 
+<label>Confirm Password
+<span class="small">Min. size 6 chars</span>
+</label>
+<input type="text" name="password2" id="password2" />
+
 <button type="submit">Sign-up</button>
 <div class="spacer"></div>
 
 </form>
 </div>
-<a href="/chat">GO CHAT</a>
+<a href="/chat">GO CHAT (this link won't be here once auth is done)</a>
   </body>
 </html>
 
