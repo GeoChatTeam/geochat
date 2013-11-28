@@ -19,13 +19,32 @@
 	
 	<script>
 		var socket = io.connect('http://localhost:3000');
-		socket.on('message', function (data) {
-			//display the message
+		
+		socket.on('connect', function(data){
+			console.log('connected');
 		});
 		
-		jQuery('#chat_thing').on('submit', function(){
-			var data = {type: 'blah', content: 'blah'}
+		socket.on('error', function(data){
+			console.log('unable to connect');
+		});
+		
+		socket.on('message', function (data) {
+			console.log('received message: ' + data);
+		});
+		
+
+		
+		jQuery(document).on('submit', '#chat_form', function(e){
+			var field = jQuery(this).find("input[type='text']");
+			var message = field.val();
+			field.val(''); //clear the field
+			field.focus();
+			
+			var data = {type: 'blah', body: message};
 			socket.emit('message', data);
+			
+
+			return false;
 		});
 	</script>
     
@@ -47,6 +66,10 @@
                     of one clause in another and there'll even be some bleeding between sentences. It's really awkward to translate. I have
                     it working but now I need to get the user list to be in line, which is annoying because it refuses to comply with all
                     of my attempts</p>
+                 <form id="chat_form" action="#">
+					<input type=text name=message />
+					<input type=submit value=send />
+                 </form>
             </div>
             <div id="userList">
 

@@ -1,5 +1,7 @@
+var users = 0;
 exports.login = function(req,res){
-	req.session.user_id = 6;
+	req.session.user_id = users;
+	users++;
 	res.redirect('/chat');
 }
 
