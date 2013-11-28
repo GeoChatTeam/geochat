@@ -1,4 +1,4 @@
-var users = 0;
+var users = 1;
 exports.login = function(req,res){
 	req.session.user_id = users;
 	users++;
