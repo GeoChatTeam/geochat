@@ -10,18 +10,18 @@ body{
 }
 .ui-tabs {
     position: relative;
-    padding: .2em;
 }
 .ui-tabs .ui-tabs-nav {
     margin: 0;
-    padding: .2em .2em 0;
+    margin-top: 4;
+    padding-top: .2em;
 }
 .ui-tabs .ui-tabs-nav li {
+    left: 0;
     list-style: none;
     float: left;
     position: relative;
     top: 0;
-    margin: 1px .2em 0 0;
     border-bottom-width: 0;
     padding: 0;
     white-space: nowrap;
@@ -54,7 +54,7 @@ current tab
     padding: 1em 1.4em;
     background: none;
     margin-top: 23px;
-    margin-bottom: 60%;
+    margin-bottom: 58%;
     border-top:solid 2px #b7ddf2;
 }
 ul{
@@ -64,6 +64,37 @@ ul{
     position: relative;
     border-bottom-width: 0;
 }
+#menus ul li{
+    border:solid 2px #b7ddf2;
+    background:#ebf4fb;
+    list-style: none;
+    position: relative;
+    top: 0;
+    padding: 8;
+    white-space: nowrap;
+    display: inline-block;
+}
+#menus ul li a{
+    color: black;
+}
+#menus ul li:hover{
+    background: #b7ddf2;
+}
+#menus ul li ul{
+    list-style: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-bottom-width: 0;
+    padding: 0;
+    white-space: nowrap;
+    display: none;
+    z-index: 1;
+}
+#menus ul li:hover >ul{
+    margin-top: 30px;
+    display: table-column;
+}
 #chat{
     overflow: scroll;
     height: 90%;
@@ -71,6 +102,9 @@ ul{
     background-color: #ffffff;
     border: solid 2px #b7ddf2;
     float: left;
+}
+p{
+    margin: 0;
 }
 #userList{
     margin-left: 8px;
