@@ -14,7 +14,7 @@ var chat = require('./routes/chat');
 var Building = require('./routes/Building');
 var Auth = require('./routes/Auth');
 var UserPool = require('./lib/UserPool');
-
+var User = require('./lib/User');
 
 var EXPRESS_SID_KEY = 'express.sid';
 var COOKIE_SECRET = 'qwerty1234567890';
@@ -40,6 +40,8 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 var server = http.createServer(app);
+
+//web sockets init
 var io = require('socket.io').listen(server);
 
 // We configure the socket.io authorization handler (handshake)
@@ -73,7 +75,7 @@ io.set('authorization', function (data, callback) {
         });
     });
 });
-
+//end websockets init
 
 // development only
 if ('development' == app.get('env')) {
@@ -86,9 +88,10 @@ app.get('/chat', chat.chat);
 app.post('/login', Auth.login);
 app.post('/register', Auth.register);
 
+//our instance of UserPool (which is defined in lib/UserPool.js)
 var user_pool = new UserPool();
-//{user_id: 2, location: 'idk', chat_styles: [0,1,2], socket: socket}
 
+//socet things below. there are basically routes.
 io.sockets.on('connection', function (socket) {
 	var session = socket.handshake.session;
 			
@@ -110,8 +113,6 @@ io.sockets.on('connection', function (socket) {
 	});
 	
 	user_pool.add({user_id : session.user_id, location: null, chat_styles: [], socket: socket});
-	
-	console.log('ffffffffffffffffffffffffffff: ' + session.user_id);
 });
 
 server.listen(app.get('port'), function(){
