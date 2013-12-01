@@ -2,9 +2,11 @@
 
 // SENDING
 
-//message types: whisper, nearby, building
-// if whisper then receiver_id must be a user_id
-// if nearby or building then receiver_id is null
+//message: String
+//chat_style: 'whisper', 'nearby', 'building'
+//reciever_id:
+// if chat_style === 'whisper' then must be a user_id
+// else then null
 function sendMessage(message, chat_style, receiver_id){
     if(socket === undefined || socket === null){
         console.log("no socket connection!");
@@ -14,7 +16,7 @@ function sendMessage(message, chat_style, receiver_id){
     socket.emit('message', {chat_style: chat_style, receiver_id: receiver_id, message: message});
 }
 
-// handling sending a nearby, broadcast message to all withhin range
+// handling sending a nearby message to all
 jQuery(document).on('submit', '#chat_form', function(e){
     var field = jQuery(this).find("input[type='text']");
     var message = field.val();
@@ -30,5 +32,5 @@ jQuery(document).on('submit', '#chat_form', function(e){
 
 // when we receive a message from the server
 socket.on('message', function (data) {
-    console.log('received message: ' + data);
+    console.log('received message: ' + data.message);
 });
