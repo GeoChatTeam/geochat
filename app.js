@@ -10,7 +10,7 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 
-var chat = require('./routes/chat');
+var Chat = require('./routes/Chat');
 var Building = require('./routes/Building');
 var Auth = require('./routes/Auth');
 var UserPool = require('./lib/UserPool');
@@ -82,8 +82,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', chat.index);
-app.get('/chat', chat.chat);
+app.get('/', Chat.index);
+app.get('/chat', Chat.chat);
 
 app.post('/login', Auth.login);
 app.post('/register', Auth.register);
