@@ -41,7 +41,7 @@
 			field.val(''); //clear the field
 			field.focus();
 			
-			var data = {type: 'blah', body: message};
+			var data = {chat_style: 'nearby', message_type: 'normal', body: message};
 			socket.emit('message', data);
 			
 

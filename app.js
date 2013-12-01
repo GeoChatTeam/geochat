@@ -15,6 +15,7 @@ var Building = require('./routes/Building');
 var Auth = require('./routes/Auth');
 var UserPool = require('./lib/UserPool');
 var User = require('./lib/User');
+var Mailman = require('./lib/Mailman');
 
 var EXPRESS_SID_KEY = 'express.sid';
 var COOKIE_SECRET = 'qwerty1234567890';
@@ -90,28 +91,47 @@ app.post('/register', Auth.register);
 
 //our instance of UserPool (which is defined in lib/UserPool.js)
 var user_pool = new UserPool();
+//our instance of Mailman (which is defined in lib/Mailman.js)
+// *** replace null with the users database. the mailman needs access to the active users (user_pool) and the users
+var mailman = new Mailman(user_pool, null);
 
 //socet things below. there are basically routes.
 io.sockets.on('connection', function (socket) {
 	var session = socket.handshake.session;
-			
+
 	socket.on('location_update', function(data){
 		console.log('location: ' + data);
 	});
-	
+
 	socket.on('building', function(data){
 		//either add or delete building from chat_styles.
 		console.log('building: ' + data);
 	});
 	
 	socket.on('message', function (data) {
-		console.log('message: ' + data.body);
+        // checks to make sure the user is authenticated and logged in and that the message was sent in the right format.
+        if(session.user_id === undefined || session.user_id === null){
+            console.log("message received from unauthenticated user");
+            return;
+        }
+        if(user_pool.find_by_user_id(session.user_id) === null){
+            console.log("message received from offline user");
+            return;
+        }
+        if(data.chat_style === undefined || data.message_type === undefined, data.message === undefined)
+        {
+            console.log("message received with invalid data");
+            return;
+        }
+
+        // receiver_id should be null unless chat_style === 'whisper'
+		mailman.handleMessageReceived(session.user_id, data.chat_style, data.receiver_id, data.message)
 	});
   
 	socket.on('disconnect', function(data){
 		user_pool.remove(session.user_id);
 	});
-	
+
 	user_pool.add({user_id : session.user_id, location: null, chat_styles: [], socket: socket});
 });
 
