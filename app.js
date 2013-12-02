@@ -115,7 +115,9 @@ io.sockets.on('connection', function (socket) {
   
 	socket.on('nickname_update', function(data){
 		if(user_pool.nicknameUnique(data.nickname)){
-		  current_user.updateNickname(data.nickname);
+			current_user.updateNickname(data.nickname);
+		} else {
+			current_user.sendNotification('error', ('this nickname ' + data.nickname + 'is in use, please try another'));
 		}
 	});
 

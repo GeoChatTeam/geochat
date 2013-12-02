@@ -22,8 +22,15 @@ jQuery(document).on('submit', 'form#textEntry', function(e){
     var message = field.val();
     field.val(''); //clear the field
     field.focus();
-
-    sendMessage(message, 'nearby', null);
+	
+	var myRe = /^\/nick (\w+)/;
+	var myArray = myRe.exec(message);
+	
+	if(myArray[1]){
+		socket.emit('update_nickame', {nickname: myArray[1]});
+	} else {
+		sendMessage(message, 'nearby', null);	
+	}
 
     return false;
 });
@@ -32,5 +39,8 @@ jQuery(document).on('submit', 'form#textEntry', function(e){
 
 // when we receive a message from the server
 socket.on('message', function (data) {
+	if(data.type === 'whisper'){
+		//do stuff for whisper
+	}
     jQuery('#chat').append("<span style=color:red;>" + data.nickname + "</span>: " + data.message + '<br />' );
 });
