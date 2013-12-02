@@ -88,7 +88,12 @@ if ('development' == app.get('env')) {
 app.get('/', Chat.index);
 app.get('/chat', Chat.chat);
 
-var db = require('monk')('localhost/geochat');
+app.get('/users', function(req, res){
+	var result = "";
+	db.get('users').find({}, function (err, docs){
+		res.json(docs);
+	});
+});
 
 app.post('/login', Auth.login(db));
 app.post('/register', Auth.register(db));
@@ -134,7 +139,8 @@ io.sockets.on('connection', function (socket) {
             console.log("message received with invalid data");
             return;
         }
-
+		
+		socket.broadcast.emit('message', data.message);
         // receiver_id should be null unless chat_style === 'whisper'
 		mailman.handleMessageReceived(session.user_id, data.chat_style, data.receiver_id, data.message)
 	});

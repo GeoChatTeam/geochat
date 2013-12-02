@@ -17,7 +17,7 @@ function sendMessage(message, chat_style, receiver_id){
 }
 
 // handling sending a nearby message to all
-jQuery(document).on('submit', '#chat_form', function(e){
+jQuery(document).on('submit', 'form#textEntry', function(e){
     var field = jQuery(this).find("input[type='text']");
     var message = field.val();
     field.val(''); //clear the field
