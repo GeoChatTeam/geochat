@@ -88,9 +88,6 @@ app.get('/chat', Chat.chat);
 
 var db = require('monk')('localhost/geochat');
 
-app.get('/', chat.index);
-app.get('/chat', chat.chat);
-
 app.post('/login', Auth.login);
 app.post('/register', Auth.register);
 
