@@ -32,5 +32,5 @@ jQuery(document).on('submit', 'form#textEntry', function(e){
 
 // when we receive a message from the server
 socket.on('message', function (data) {
-    console.log('received message: ' + data.message);
+    jQuery('#chat').append("<span style=color:red;>" + data.nickname + "</span>: " + data.message + '<br />' );
 });
