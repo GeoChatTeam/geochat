@@ -14,7 +14,7 @@ var Chat = require('./routes/Chat');
 var Building = require('./routes/Building');
 var Auth = require('./routes/Auth');
 var UserPool = require('./lib/UserPool');
-var User = require('./lib/User');
+var ActiveUser = require('./lib/ActiveUser');
 var Mailman = require('./lib/Mailman');
 
 var EXPRESS_SID_KEY = 'express.sid';
@@ -134,7 +134,7 @@ io.sockets.on('connection', function (socket) {
 		user_pool.remove(session.user_id);
 	});
 	
-	user_pool.add(new User(session.user_id, null, [0], 'nickname', socket));
+	user_pool.add(new ActiveUser(session.user_id, null, [0], 'nickname', socket));
 });
 
 server.listen(app.get('port'), function(){
