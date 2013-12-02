@@ -38,7 +38,6 @@
     
 </head>
 <body onLoad = "getUserLocation()">
-<p id="output">Current location: *This will be removed once all location aspects are working.*</p>
 <div id="menus">
     <ul>
         <li><a href="account">Account</a>
@@ -46,6 +45,7 @@
                 <li><a href="logOut">Log out</a></li>
             </ul>
         </li>
+        <p id="output">Current location: *This will be removed once all location aspects are working.*</p>
     </ul>
 </div>
 <div id="tabs">
@@ -57,25 +57,18 @@
     <div id="tabs-1">
         <ul>
             <div id="chat">
-                <p><b style="color: red">User: </b>This is a test of if the scroll box works, thus it needs a ton of text and I really don't feel like looking up lorem
-                    ipsum so I'm just writing stuff. On the subject of lorem ipsum, Cicero was a very strange writer even for Latin. The
-                    language itself is a bit problematic since it can kind of ignores any conventions as far as sentence structure but
-                    they kind of make sense, clauses are together and all that. Cicero just sort of does what he wants, he'll have parts
-                    of one clause in another and there'll even be some bleeding between sentences. It's really awkward to translate. I have
-                    it working but now I need to get the user list to be in line, which is annoying because it refuses to comply with all
-                    of my attempts</p>
-                 <form id="chat_form" action="#">
-					<input type=text name=message />
-					<input type=submit value=send />
-                 </form>
-                <!--<=chatLog>-->
+                <!--chatLo>-->
             </div>
             <div id="userList">
-                <!--<=userList>-->
+                <!--userList-->
             </div>
             <div id="roomList">
-                <!--<=roomList>-->
+                <!--roomList-->
             </div>
+            <form id="textEntry">
+                <input id="message" type="text">
+                <button type="submit">Send</button>
+            </form>
             <div id="mapholder"></div>   <!--MOVE THIS MAP-->
         </ul>
     </div>
