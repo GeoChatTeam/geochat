@@ -1,5 +1,5 @@
 exports.index = function(req, res){
-	res.render('home.ejs', {title: 'geochat'});
+	res.render('home.ejs', {title: 'GEOCHAT', err: ''});
 };
 
 exports.chat=function(req,res){

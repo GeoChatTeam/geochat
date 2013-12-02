@@ -1,56 +1,76 @@
 <!DOCTYPE html>
 <html>
-  <head>
-	 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/home.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <div id="stylized" class="myform">
-<form id="form" name="form" method="post" action="/login">
-<h1>Login form</h1>
 
-<label>Email
-<span class="small">Your UMASS email address</span>
-</label>
-<input type="text" name="email" id="email" />
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js"></script>
+		<title><%= title %></title>
+		<link rel='stylesheet' href='/stylesheets/home.css' />
+	</head>
 
-<label>Password
-</label>
-<input type="password" name="password" id="password" />
+	<body>
+		<h1><%= title %></h1>
+		<p>Welcome to <%= title %></p>
+		<div id="stylized" class="myform">
+			<form id="login_form" name="form" method="post" action="/login">
+				<h1>Login form</h1>
 
-<button type="submit">Log in</button>
-<div class="spacer"></div>
+				<label>Email
+				<span class="small">Your UMASS email address</span>
+				</label>
+				<input type="text" name="email" id="email" />
 
-</form>
+				<label>Password</label>
+				<input type="password" name="password" id="login_password" />
 
-<hr>
+				<button id='login_button'>Log in</button>
+				<script>
+					$('#login_button').click(function(){
+						var hash = CryptoJS.SHA1($('#login_password').val());
+						$('#login_password').val(hash);
+						$('#login_form').submit();
+					});
+				</script>
+				<div class="spacer"></div>
+			</form>
 
-<form id="form" name="form" method="post" action="/register">
-<h1>Sign-up form</h1>
+			<hr>
 
-<label>Email
-<span class="small">Add a valid address</span>
-</label>
-<input type="text" name="email" id="email" />
+			<form id="register_form" name="form" method="post" action="/register">
+				<h1>Sign-up form</h1>
 
-<label>Password
-<span class="small">Min. size 6 chars</span>
-</label>
-<input type="password" name="password" id="password" />
+				<label>Email
+				<span class="small">Add a valid address</span>
+				</label>
+				<input type="text" name="email" id="email" />
 
-<label>Confirm Password
-<span class="small">Min. size 6 chars</span>
-</label>
-<input type="password" name="password2" id="password2" />
+				<label>Password
+				<span class="small">Min. size 6 chars</span>
+				</label>
+				<input type="password" name="password" id="register_password1" />
 
-<button type="submit">Sign-up</button>
-<div class="spacer"></div>
+				<label>Confirm Password
+				<span class="small">Min. size 6 chars</span>
+				</label>
+				<input type="password" name="password2" id="register_password2" />
 
-</form>
-</div>
-</body>
+				<button id='register_button'>Sign-up</button>
+				<script>
+					$('#register_button').click(function(){
+						if ($('#register_password1').val().length >= 6 && $('#register_password2').val().length >= 6) { // hashing will ask that the passwords are too short
+							var hash1 = CryptoJS.SHA1($('#register_password1').val());
+							var hash2 = CryptoJS.SHA1($('#register_password2').val());
+							$('#register_password1').val(hash1);
+							$('#register_password2').val(hash2);
+						}
+						$('#register_form').submit();
+					});
+				</script>
+				<div class="spacer"></div>
+				<h1 style='color:red'><%= err %></h1>
+			</form>
+		</div>
+	</body>
+
 </html>
 

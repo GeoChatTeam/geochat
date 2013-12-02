@@ -3,6 +3,7 @@ exports.login = function(db) {
 		
 		var email = req.body.email;
 		var password = req.body.password;
+		console.log(password);
 
 		var usersCollection = db.get('users');
 
@@ -10,15 +11,15 @@ exports.login = function(db) {
 		usersCollection.find({ 'email' : email }, {}, function(err, doc){
 			if (err) {
 				console.log(err);
-				res.send("Database error.");
+				res.render('home.ejs', {title: 'GEOCHAT', err: "ERROR: We had an issue with our database. Please try again."});
 				return;
 			}
 			if (doc[0] === undefined) { // we queried the database for this email and found no match (not registered)
-				res.send("The requested email address is not yet registered.");
+			res.render('home.ejs', {title: 'GEOCHAT', err: "LOGIN FAILED: Email not found."});
 				return;
 			}
 			if (doc[0].password !== password) { // supplied password does not match stored password
-				res.send("Incorrect password.");
+				res.render('home.ejs', {title: 'GEOCHAT', err: "LOGIN FAILED: Incorrect password."});
 				return;
 			}
 			req.session.user_id = doc[0]._id; // attach user ID from database to session (validated login)
@@ -33,20 +34,21 @@ exports.register = function(db) {
 		var email = req.body.email;
 		var password = req.body.password;
 		var password2 = req.body.password2;
+		console.log(password + ' ' + password2);
 
 		if (password !== password2) { // supplied passwords do not match
-			res.send("Passwords entered do not match.");
+			res.render('home.ejs', {title: 'GEOCHAT', err: "REGISTRATION FAILED: Passwords do not match. Please try again."});
 			return;
 		}
 
 		if (password.length < 6) { // password is too short
-			res.send("Password must be at least 6 characters.");
+			res.render('home.ejs', {title: 'GEOCHAT', err: "REGISTRATION FAILED: Password must be at least 6 characters. Please try again."});
 			return;
 		}
 
 		var umassEmailPattern = new RegExp('.*@umass.edu'); 
 		if (!umassEmailPattern.test(email)) { // email address does not end in @umass.edu
-			res.send("Does not appear to be a valid UMASS email address.");
+			res.render('home.ejs', {title: 'GEOCHAT', err: "REGISTRATION FAILED: Only UMASS email addresses are accepted."});
 			return;
 		}
 
@@ -56,11 +58,11 @@ exports.register = function(db) {
 		usersCollection.find({ 'email' : email }, {}, function(err, doc) {
 			if (err) {
 				console.log(err);
-				res.send("Database error.");
+				res.render('home.ejs', {title: 'GEOCHAT', err: "ERROR: We had an issue with our database. Please try again."});
 				return;
 			}
 			if (doc[0] !== undefined) { // we queried the database for this email and found a match (already registered)
-				res.send("The requested email address is already registered.");
+				res.render('home.ejs', {title: 'GEOCHAT', err: "REGISTRATION FAILED: Requested email is already registered."});
 				return;
 			} else {
 				// Insert new user into the database. (how do we want to be assigning IDs?)
@@ -70,7 +72,7 @@ exports.register = function(db) {
 				}, function(err, doc) {
 					if (err) {
 						console.log(err);
-						res.send("Error adding user to the database.");
+						res.render('home.ejs', {title: 'GEOCHAT', err: "ERROR: We had an issue with our database. Please try again."});
 						return;
 					} else {
 						req.session.user_id = doc._id; // attach user ID to session (validated login)
