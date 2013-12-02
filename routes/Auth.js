@@ -3,7 +3,6 @@ exports.login = function(db) {
 		
 		var email = req.body.email;
 		var password = req.body.password;
-		console.log(password);
 
 		var usersCollection = db.get('users');
 
@@ -34,7 +33,6 @@ exports.register = function(db) {
 		var email = req.body.email;
 		var password = req.body.password;
 		var password2 = req.body.password2;
-		console.log(password + ' ' + password2);
 
 		if (password !== password2) { // supplied passwords do not match
 			res.render('home.ejs', {title: 'GEOCHAT', err: "REGISTRATION FAILED: Passwords do not match. Please try again."});
