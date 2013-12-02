@@ -86,6 +86,11 @@ if ('development' == app.get('env')) {
 app.get('/', Chat.index);
 app.get('/chat', Chat.chat);
 
+var db = require('monk')('localhost/geochat');
+
+app.get('/', chat.index);
+app.get('/chat', chat.chat);
+
 app.post('/login', Auth.login);
 app.post('/register', Auth.register);
 
@@ -131,8 +136,8 @@ io.sockets.on('connection', function (socket) {
 	socket.on('disconnect', function(data){
 		user_pool.remove(session.user_id);
 	});
-
-	user_pool.add({user_id : session.user_id, location: null, chat_styles: [], socket: socket});
+	
+	user_pool.add(new User(session.user_id, null, [0], 'nickname', socket));
 });
 
 server.listen(app.get('port'), function(){
