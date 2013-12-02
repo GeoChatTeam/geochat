@@ -114,9 +114,9 @@ io.sockets.on('connection', function (socket) {
 	});
   
 	socket.on('nickname_update', function(data){
-    if(user_pool.nicknameUnique(data.nickname)){
-      current_user.updateNickname(data.nickname);
-    }
+		if(user_pool.nicknameUnique(data.nickname)){
+		  current_user.updateNickname(data.nickname);
+		}
 	});
 
 	socket.on('building', function(data){
@@ -140,7 +140,6 @@ io.sockets.on('connection', function (socket) {
             return;
         }
 		
-		socket.broadcast.emit('message', data.message);
         // receiver_id should be null unless chat_style === 'whisper'
 		mailman.handleMessageReceived(session.user_id, data.chat_style, data.receiver_id, data.message)
 	});
@@ -150,6 +149,7 @@ io.sockets.on('connection', function (socket) {
 	});
 	
 	user_pool.add(new ActiveUser(session.user_id, null, [0], ('user-' + session.user_id), socket));
+	console.log("user_pool: \n" + user_pool.to_s());
 });
 
 server.listen(app.get('port'), function(){

@@ -1,5 +1,3 @@
-var users = 1; // this is currently being used as a counter for generating user IDs
-
 exports.login = function(db) {
 	return function(req,res) {
 		
@@ -23,7 +21,7 @@ exports.login = function(db) {
 				res.send("Incorrect password.");
 				return;
 			}
-			req.session.user_id = doc[0].user_id; // attach user ID from database to session (validated login)
+			req.session.user_id = doc[0]._id; // attach user ID from database to session (validated login)
 			res.redirect('/chat'); // redirect to chat page
 		});
 	}
@@ -69,15 +67,13 @@ exports.register = function(db) {
 				usersCollection.insert({
 					'email' : email,
 					'password' : password,
-					'user_id' : users
 				}, function(err, doc) {
 					if (err) {
 						console.log(err);
 						res.send("Error adding user to the database.");
 						return;
 					} else {
-						req.session.user_id = users; // attach user ID to session (validated login)
-						users++; // increment users value (are we using this to assign IDs?)
+						req.session.user_id = doc._id; // attach user ID to session (validated login)
 						res.redirect('/chat'); // redirect to chat page
 					}
 				});	
