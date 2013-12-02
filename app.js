@@ -14,8 +14,10 @@ var Chat = require('./routes/Chat');
 var Building = require('./routes/Building');
 var Auth = require('./routes/Auth');
 var UserPool = require('./lib/UserPool');
-var User = require('./lib/User');
+var ActiveUser = require('./lib/ActiveUser');
 var Mailman = require('./lib/Mailman');
+
+var db = require('monk')('localhost/geochatdb'); // this points to the database
 
 var EXPRESS_SID_KEY = 'express.sid';
 var COOKIE_SECRET = 'qwerty1234567890';
@@ -88,8 +90,8 @@ app.get('/chat', Chat.chat);
 
 var db = require('monk')('localhost/geochat');
 
-app.post('/login', Auth.login);
-app.post('/register', Auth.register);
+app.post('/login', Auth.login(db));
+app.post('/register', Auth.register(db));
 
 //our instance of UserPool (which is defined in lib/UserPool.js)
 var user_pool = new UserPool();
@@ -97,12 +99,19 @@ var user_pool = new UserPool();
 // *** replace null with the users database. the mailman needs access to the active users (user_pool) and the users
 var mailman = new Mailman(user_pool, null);
 
-//socet things below. there are basically routes.
+//socket things below. there are basically routes.
 io.sockets.on('connection', function (socket) {
 	var session = socket.handshake.session;
+  var current_user = user_pool.find_by_user_id(session.user_id);
 
 	socket.on('location_update', function(data){
 		console.log('location: ' + data);
+	});
+  
+	socket.on('nickname_update', function(data){
+    if(user_pool.nicknameUnique(data.nickname)){
+      current_user.updateNickname(data.nickname);
+    }
 	});
 
 	socket.on('building', function(data){
@@ -134,7 +143,7 @@ io.sockets.on('connection', function (socket) {
 		user_pool.remove(session.user_id);
 	});
 	
-	user_pool.add(new User(session.user_id, null, [0], 'nickname', socket));
+	user_pool.add(new ActiveUser(session.user_id, null, [0], ('user-' + session.user_id), socket));
 });
 
 server.listen(app.get('port'), function(){
