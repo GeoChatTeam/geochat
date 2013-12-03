@@ -68,8 +68,7 @@ exports.register = function(db, mail) {
 				return;
 			}
 
-			//if (doc[0] !== undefined) { // we queried the database for this email and found a match (already registered)
-			if (1===2) {
+			if (doc[0] !== undefined) { // we queried the database for this email and found a match (already registered)
 				res.render('home.ejs', {title: 'GEOCHAT', login_err: '', reg_err: "REGISTRATION FAILED: Requested email is already registered."});
 				return;
 			} else {
