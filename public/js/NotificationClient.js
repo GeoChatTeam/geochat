@@ -5,8 +5,8 @@ function displayNotification(type, message){
 		neutral: "font-weight: bold;"
 	};
 	
-	jQuery('#chat').append('<span style="' + styles[type] +'">' + message + '</span><br />');
-	var objDiv = document.getElementById("chat");
+	jQuery('#chat-none').append('<span style="' + styles[type] +'">' + message + '</span><br />');
+	var objDiv = document.getElementById("chat-none");
 	objDiv.scrollTop = objDiv.scrollHeight;
 }
 

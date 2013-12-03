@@ -22,6 +22,7 @@
     <script src="/js/ChatClient.js"></script>
     <script src="/js/NotificationClient.js"></script>
     <script src="/js/NicknameClient.js"></script>
+    <script src="/js/BuildingClient.js"></script>
     
 </head>
 <body onLoad = "getUserLocation()">
@@ -36,44 +37,70 @@
         <p id="output">Current location: *This will be removed once all location aspects are working.*</p>
     </ul>
 </div>
-<div id="tabs">
-    <ul>
-        <li><a href="#tabs-1">Nearby</a></li>
+<div id="tabs" class="inline">
+    <ul id="tab_list">
+        <li><a href="#tabs-none">Nearby</a></li>
+        <li><a href="#tabs-0">Berkshire</a></li>
+        <li><a href="#tabs-1">Worcester</a></li>
+        <li><a href="#tabs-2">Hampshire</a></li>
+        <li><a href="#tabs-3">Franklin</a></li>
     </ul>
-    <div id="tabs-1">
+
+    <div id="tabs-none">
         <ul>
-            <div id="chat">
+            <div id="chat-none">
                 <!--chatLo>-->
             </div>
-            <div id="userList">
-                <!--userList-->
-            </div>
-            <form id="textEntry">
-                <input id="message" type="text" autocomplete="off">
-                <button type="submit">Send</button>
-            </form>
-            <div id="mapholder"></div>   <!--MOVE THIS MAP-->
         </ul>
     </div>
-    <div id="tabs-2">
-        <div id="chat">
-            <p>But if this is visible it isn't</p>
-        </div>
-        <div id="userList">
-
-        </div>
-        <div id="roomList">
-            <ul>
-                <% buildings.forEach(function(building){ %>
-                <li><%= building.name %></li>
-                <% }); %>
-            </ul>
-        </div>
+    <div id="tabs-0" style="display: none;">
+        <ul>
+            <div id="chat-0">
+                Berkshire
+            </div>
+        </ul>
+    </div>
+    <div id="tabs-1" style="display: none;">
+        <ul>
+            <div id="chat-1">
+                Worcester
+            </div>
+        </ul>
+    </div>
+    <div id="tabs-2" style="display: none;">
+        <ul>
+            <div id="chat-2">
+                Hampshire
+            </div>
+        </ul>
+    </div>
+    <div id="tabs-3" style="display: none;">
+        <ul>
+            <div id="chat-3">
+                Franklin
+            </div>
+        </ul>
     </div>
 </div>
 
+<div id="userList" class="inline">
+
+</div>
+<div class="inline" id="roomList">
+    <ul>
+        <% buildings.forEach(function(building){ %>
+        <li data-id="<%= building.id %>" data-name="<%= building.name %>"><%= building.name %></li>
+        <% }); %>
+    </ul>
+</div>
+<form id="textEntry">
+    <input id="message" type="text" autocomplete="off">
+    <button type="submit">Send</button>
+</form>
+<div id="mapholder"></div>   <!--MOVE THIS MAP-->
+
 <!--Google Maps API key  AIzaSyDU3H0Nf-iIF9GBRUZIPX4WqIru7pIhfNw -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={AIzaSyDU3H0Nf-iIF9GBRUZIPX4WqIru7pIhfNw}&sensor=false"></script>-->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={AIzaSyDU3H0Nf-iIF9GBRUZIPX4WqIru7pIhfNw}&sensor=false"></script>
 <script type="text/javascript" src="/js/LocationClient.js"></script>
 <!-- <div id="mapholder"></div>
 This will have to go where we want the map to appear on the screen.-->

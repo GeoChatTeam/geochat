@@ -36,10 +36,10 @@ function displayMessage(from, message, type){
 	//this #chat part will be dynamic eventually...
 	
 	//createTextNode is used so that whatever the user had input is treated as text and not markup
-	jQuery('#chat').append('<span style="font-weight: bold; color: red;">' + from + '</span>: ');
-	jQuery('#chat').append(document.createTextNode(message))
-	jQuery('#chat').append('<br />');
-	var objDiv = document.getElementById("chat");
+	jQuery('#chat-none').append('<span style="font-weight: bold; color: red;">' + from + '</span>: ');
+	jQuery('#chat-none').append(document.createTextNode(message))
+	jQuery('#chat-none').append('<br />');
+	var objDiv = document.getElementById("chat-none");
 	objDiv.scrollTop = objDiv.scrollHeight;
 }
 

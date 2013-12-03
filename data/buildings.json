@@ -1,20 +1,24 @@
 [
     {
+        "id": 0,
         "name": "Berkshire",
         "latitude": 100,
         "longitude": 100
     },
     {
+        "id": 1,
         "name": "Worcester",
         "latitude": 100,
         "longitude": 150
     },
     {
+        "id": 2,
         "name": "Hampshire",
         "latitude": 150,
         "longitude": 100
     },
     {
+        "id": 3,
         "name": "Franklin",
         "latitude": 150,
         "longitude": 150
