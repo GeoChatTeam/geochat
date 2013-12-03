@@ -72,6 +72,18 @@
 				<h1 style='color:red'><%= reg_err %></h1>
 			</form>
 		</div>
+
+		<form method="post" action="/login">
+			<input type="hidden" name="email" value="developer1@umass.edu"/>
+			<input type="hidden" name="password" value=""/>
+			<input type="submit" value="Login Dev1"/>
+		</form>
+		<form method="post" action="/login">
+			<input type="hidden" name="email" value="developer2@umass.edu"/>
+			<input type="hidden" name="password" value=""/>
+			<input type="submit" value="Login Dev2"/>
+		</form>
+
 	</body>
 
 </html>
