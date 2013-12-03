@@ -10,6 +10,7 @@
     "ejs": "*",
     "mongodb": "*",
     "monk": "*", 
-    "nodemailer": "*"
+    "nodemailer": "*",
+    "geolib": "*"
   }
 }

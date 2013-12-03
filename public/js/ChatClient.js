@@ -30,7 +30,7 @@ function handleMessage(message){
 
 function displayMessage(from, message, type){
 	if(type === 'whisper'){
-		
+		return;
 	}
 	
 	//this #chat part will be dynamic eventually...
