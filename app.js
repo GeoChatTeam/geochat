@@ -88,6 +88,7 @@ if ('development' == app.get('env')) {
 app.get('/', Chat.index);
 app.get('/chat', Chat.chat);
 app.get('/users', Auth.userList(db));
+app.get('/logOut', Auth.logOut);
 app.post('/login', Auth.login(db));
 app.post('/register', Auth.register(db));
 

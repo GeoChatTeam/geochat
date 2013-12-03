@@ -89,3 +89,8 @@ exports.userList = function(db){
 		});
 	};
 };
+
+exports.logOut = function(req, res){
+	req.session.user_id = null;
+	res.redirect('/');
+}
