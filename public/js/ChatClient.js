@@ -27,7 +27,8 @@ jQuery(document).on('submit', 'form#textEntry', function(e){
 	var myArray = myRe.exec(message);
 	
 	if(myArray[1]){
-		socket.emit('update_nickame', {nickname: myArray[1]});
+		debugger;
+		socket.emit('nickname_update', {nickname: myArray[1]});
 	} else {
 		sendMessage(message, 'nearby', null);	
 	}

@@ -107,7 +107,6 @@ var mailman = new Mailman(user_pool, null);
 //socket things below. there are basically routes.
 io.sockets.on('connection', function (socket) {
 	var session = socket.handshake.session;
-  var current_user = user_pool.find_by_user_id(session.user_id);
 
 	socket.on('location_update', function(data){
 		console.log('location: ' + data);
@@ -150,7 +149,9 @@ io.sockets.on('connection', function (socket) {
 		user_pool.remove(session.user_id);
 	});
 	
-	user_pool.add(new ActiveUser(session.user_id, null, [0], ('user-' + session.user_id), socket));
+	user_pool.add(new ActiveUser(session.user_id, null, [0], null, socket));
+	var current_user = user_pool.find_by_user_id(session.user_id);
+	current_user.updateNickname('user-' + session.user_id);
 	console.log("user_pool: \n" + user_pool.to_s());
 });
 
