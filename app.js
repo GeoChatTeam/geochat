@@ -87,14 +87,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', Chat.index);
 app.get('/chat', Chat.chat);
-
-app.get('/users', function(req, res){
-	var result = "";
-	db.get('users').find({}, function (err, docs){
-		res.json(docs);
-	});
-});
-
+app.get('/users', Auth.userList(db));
 app.post('/login', Auth.login(db));
 app.post('/register', Auth.register(db));
 
@@ -116,7 +109,7 @@ io.sockets.on('connection', function (socket) {
 		if(user_pool.nicknameUnique(data.nickname)){
 			current_user.updateNickname(data.nickname);
 		} else {
-			current_user.sendNotification('error', ('this nickname ' + data.nickname + 'is in use, please try another'));
+			current_user.sendNotification('error', ('The nickname ' + data.nickname + ' is in use, please try another'));
 		}
 	});
 

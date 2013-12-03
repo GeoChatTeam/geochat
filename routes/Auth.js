@@ -24,8 +24,8 @@ exports.login = function(db) {
 			req.session.user_id = doc[0]._id; // attach user ID from database to session (validated login)
 			res.redirect('/chat'); // redirect to chat page
 		});
-	}
-}
+	};
+};
 
 exports.register = function(db) {
 	return function(req,res) {
@@ -79,5 +79,13 @@ exports.register = function(db) {
 				});	
 			}
 		});
-	}
-}
+	};
+};
+
+exports.userList = function(db){
+	return function(req, res){
+		db.get('users').find({}, function (err, docs){
+			res.json(docs);
+		});
+	};
+};

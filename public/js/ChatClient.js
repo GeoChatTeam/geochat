@@ -16,32 +16,39 @@ function sendMessage(message, chat_style, receiver_id){
     socket.emit('message', {chat_style: chat_style, receiver_id: receiver_id, message: message});
 }
 
+function displayMessage(from, message, type){
+	if(type === 'whisper'){
+		
+	}
+	
+	//this #chat will be dynamic eventually...
+	jQuery('#chat').append('<span>' + from + '</span>' + message + '<br />');
+}
+
 // handling sending a nearby message to all
 jQuery(document).on('submit', 'form#textEntry', function(e){
     var field = jQuery(this).find("input[type='text']");
     var message = field.val();
-    field.val(''); //clear the field
+    field.val('');
     field.focus();
 	
-	var myRe = /^\/nick (\w+)/;
-	var myArray = myRe.exec(message);
+	//check if the message is a nickname command
+	var nicknameRegEx = /^\/nick (\w+)/;
+	var matches = nicknameRegEx.exec(message);
 	
-	if(myArray[1]){
-		debugger;
-		socket.emit('nickname_update', {nickname: myArray[1]});
+	if(matches[1]){
+		socket.emit('nickname_update', {nickname: matches[1]});
 	} else {
 		sendMessage(message, 'nearby', null);	
 	}
 
-    return false;
+	alert('hdgkjasf');
+	e.preventDefault();
 });
-
-// RECEIVING
 
 // when we receive a message from the server
 socket.on('message', function (data) {
-	if(data.type === 'whisper'){
-		//do stuff for whisper
-	}
-    jQuery('#chat').append("<span style=color:red;>" + data.nickname + "</span>: " + data.message + '<br />' );
+	displayMessage(data.from, data.message, data.type);
 });
+
+
