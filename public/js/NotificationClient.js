@@ -6,6 +6,8 @@ function displayNotification(type, message){
 	};
 	
 	jQuery('#chat').append('<span style="' + styles[type] +'">' + message + '</span><br />');
+	var objDiv = document.getElementById("chat");
+	objDiv.scrollTop = objDiv.scrollHeight;
 }
 
 socket.on('notification', function(data){

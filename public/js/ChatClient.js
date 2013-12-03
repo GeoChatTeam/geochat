@@ -39,6 +39,8 @@ function displayMessage(from, message, type){
 	jQuery('#chat').append('<span style="font-weight: bold; color: red;">' + from + '</span>: ');
 	jQuery('#chat').append(document.createTextNode(message))
 	jQuery('#chat').append('<br />');
+	var objDiv = document.getElementById("chat");
+	objDiv.scrollTop = objDiv.scrollHeight;
 }
 
 // handling sending a nearby message to all

@@ -105,7 +105,7 @@ io.sockets.on('connection', function (socket) {
 	user_pool.add(current_user);
 
 	socket.on('location_update', function(data){
-		console.log('location: ' + data);
+		current_user.updateLocation({longitude: data.longitude, latitude: data.latitude});
 	});
   
 	socket.on('nickname_update', function(data){

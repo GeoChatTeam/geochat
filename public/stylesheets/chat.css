@@ -160,7 +160,7 @@ button{
     clear:both;
     width:9.3%;
     height:100%;
-    background:#666666 url(img/button.png) no-repeat;
+    background:#666666 url(/img/button.png) no-repeat;
     text-align:center;
     line-height:31px;
     color:#FFFFFF;
