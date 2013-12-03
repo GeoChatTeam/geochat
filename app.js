@@ -101,6 +101,8 @@ var mailman = new Mailman(user_pool, null);
 //socket things below. there are basically routes.
 io.sockets.on('connection', function (socket) {
 	var session = socket.handshake.session;
+	var current_user = new ActiveUser(session.user_id, null, [0], socket);
+	user_pool.add(current_user);
 
 	socket.on('location_update', function(data){
 		console.log('location: ' + data);
@@ -108,7 +110,11 @@ io.sockets.on('connection', function (socket) {
   
 	socket.on('nickname_update', function(data){
 		if(user_pool.nicknameUnique(data.nickname)){
+			user_pool.eachUser(function(user){
+				user.announceNicknameChange(current_user.getNickname(), data.nickname);
+			});
 			current_user.updateNickname(data.nickname);
+			
 		} else {
 			current_user.sendNotification('error', ('The nickname ' + data.nickname + ' is in use, please try another'));
 		}
@@ -140,13 +146,11 @@ io.sockets.on('connection', function (socket) {
 	});
   
 	socket.on('disconnect', function(data){
-		user_pool.remove(session.user_id);
+		user_pool.eachUser(function(user){
+			user.announceDepartureOf(current_user);
+		});
+		user_pool.remove(current_user.user_id);
 	});
-	
-	user_pool.add(new ActiveUser(session.user_id, null, [0], null, socket));
-	var current_user = user_pool.find_by_user_id(session.user_id);
-	current_user.updateNickname('user-' + session.user_id);
-	console.log("user_pool: \n" + user_pool.to_s());
 });
 
 server.listen(app.get('port'), function(){
