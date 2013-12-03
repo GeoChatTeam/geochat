@@ -135,7 +135,7 @@ io.sockets.on('connection', function (socket) {
         }
 		
         // receiver_id should be null unless chat_style === 'whisper'
-		mailman.handleMessageReceived(session.user_id, data.chat_style, data.receiver_id, data.message)
+		mailman.handleMessageReceived(session.user_id, data.chat_style, data.receiver_id, data.message);
 	});
   
 	socket.on('disconnect', function(data){
