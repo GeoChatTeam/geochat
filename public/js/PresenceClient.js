@@ -39,3 +39,10 @@ socket.on('nickname_change', function(data){
 	}
 	drawPane();
 });
+
+socket.on('room_populate', function(data){
+	for(var i = 0; i < data.users.length; i++){
+		chat_room_list[data.users[i]] = true;
+	}
+	drawPane();
+});
