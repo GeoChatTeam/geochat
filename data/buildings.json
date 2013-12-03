@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Berkshire",
+        "latitude": 100,
+        "longitude": 100
+    },
+    {
+        "name": "Worcester",
+        "latitude": 100,
+        "longitude": 150
+    },
+    {
+        "name": "Hampshire",
+        "latitude": 150,
+        "longitude": 100
+    },
+    {
+        "name": "Franklin",
+        "latitude": 150,
+        "longitude": 150
+    }
+]

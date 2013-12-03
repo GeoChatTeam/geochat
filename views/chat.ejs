@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>geochat</title>
+    <title>GeoChat</title>
     <link rel='stylesheet' href='/stylesheets/chat.css'/>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -18,23 +18,7 @@
     </script>
     <script src="/socket.io/socket.io.js"></script>
 	
-	<script>
-        // This should be extracted to PresenceClient.js
-
-        // This must come before ChatClient.js
-		var socket = io.connect('http://localhost:3000');
-		
-		socket.on('connect', function(data){
-			console.log('connected');
-		});
-		
-		socket.on('error', function(data){
-			console.log('unable to connect');
-		});
-		
-
-	</script>
-	
+	<script src="js/PresenceClient.js"></script>
     <script src="/js/ChatClient.js"></script>
     <script src="/js/NotificationClient.js"></script>
     <script src="/js/NicknameClient.js"></script>
@@ -54,9 +38,7 @@
 </div>
 <div id="tabs">
     <ul>
-        <!--<\%=tabs>-->
         <li><a href="#tabs-1">Nearby</a></li>
-        <li><a href="#tabs-2">Building</a></li>
     </ul>
     <div id="tabs-1">
         <ul>
@@ -65,9 +47,6 @@
             </div>
             <div id="userList">
                 <!--userList-->
-            </div>
-            <div id="roomList">
-                <!--roomList-->
             </div>
             <form id="textEntry">
                 <input id="message" type="text">
@@ -84,7 +63,11 @@
 
         </div>
         <div id="roomList">
-
+            <ul>
+                <% buildings.forEach(function(building){ %>
+                <li><%= building.name %></li>
+                <% }); %>
+            </ul>
         </div>
     </div>
 </div>
