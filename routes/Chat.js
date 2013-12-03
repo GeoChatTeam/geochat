@@ -1,7 +1,7 @@
 var buildings = require('../data/buildings.json');
 
 exports.index = function(req, res){
-	res.render('home.ejs', {title: 'GEOCHAT', err: ''});
+	res.render('home.ejs', {title: 'GEOCHAT', login_err: '', reg_err: ''});
 };
 
 exports.chat=function(req,res){

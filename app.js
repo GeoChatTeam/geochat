@@ -18,6 +18,7 @@ var ActiveUser = require('./lib/ActiveUser');
 var Mailman = require('./lib/Mailman');
 
 var db = require('monk')('localhost/geochatdb'); // this points to the database
+var mail = require('nodemailer').mail;
 
 var EXPRESS_SID_KEY = 'express.sid';
 var COOKIE_SECRET = 'qwerty1234567890';
@@ -90,7 +91,8 @@ app.get('/chat', Chat.chat);
 app.get('/users', Auth.userList(db));
 app.get('/logOut', Auth.logOut);
 app.post('/login', Auth.login(db));
-app.post('/register', Auth.register(db));
+app.post('/register', Auth.register(db, mail));
+app.post('/confirm', Auth.confirmRegister(db));
 
 //our instance of UserPool (which is defined in lib/UserPool.js)
 var user_pool = new UserPool();
