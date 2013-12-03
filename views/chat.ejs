@@ -4,10 +4,10 @@
     <link rel='stylesheet' href='/stylesheets/chat.css'/>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
+    <script src='/node_modules/ui.tabs.closable.js'></script>
     <script>
         $(function(){
-            var tabs=$("#tabs").tabs();
+            var tabs=$("#tabs").tabs({closable:true});
             tabs.find(".ui-tabs-nav").sortable({
                 axis: "x",
                 stop: function() {
@@ -34,7 +34,6 @@
             </ul>
         </li>
         <li>Chatting As: <span id="current_nickname"></span></li>
-        <p id="output">Current location: *This will be removed once all location aspects are working.*</p>
     </ul>
 </div>
 <div id="tabs" class="inline">
@@ -49,7 +48,7 @@
     <div id="tabs-none">
         <ul>
             <div id="chat-none">
-                <!--chatLo>-->
+                <!--chatLog>-->
             </div>
         </ul>
     </div>
@@ -93,10 +92,6 @@
         <% }); %>
     </ul>
 </div>
-<form id="textEntry">
-    <input id="message" type="text" autocomplete="off">
-    <button type="submit">Send</button>
-</form>
 <div id="mapholder"></div>   <!--MOVE THIS MAP-->
 
 <!--Google Maps API key  AIzaSyDU3H0Nf-iIF9GBRUZIPX4WqIru7pIhfNw -->
@@ -104,6 +99,10 @@
 <script type="text/javascript" src="/js/LocationClient.js"></script>
 <!-- <div id="mapholder"></div>
 This will have to go where we want the map to appear on the screen.-->
-
+<form id="textEntry">
+    <input id="message" type="text" autocomplete="off">
+    <button type="submit">Send</button>
+</form>
+<p id="output">Current location: *This will be removed once all location aspects are working.*</p>
 </body>
 </html>
