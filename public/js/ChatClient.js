@@ -39,7 +39,7 @@ function displayMessage(from, message, type){
 	jQuery('#chat-none').append('<span style="font-weight: bold; color: red;">' + from + '</span>: ');
 	jQuery('#chat-none').append(document.createTextNode(message))
 	jQuery('#chat-none').append('<br />');
-	var objDiv = document.getElementById("chat-none");
+	var objDiv = document.getElementById("tabs");
 	objDiv.scrollTop = objDiv.scrollHeight;
 }
 

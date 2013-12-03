@@ -6,7 +6,7 @@ function displayNotification(type, message){
 	};
 	
 	jQuery('#chat-none').append('<span style="' + styles[type] +'">' + message + '</span><br />');
-	var objDiv = document.getElementById("chat-none");
+	var objDiv = document.getElementById("tabs");
 	objDiv.scrollTop = objDiv.scrollHeight;
 }
 
