@@ -1,5 +1,4 @@
 function displayNotification(chat_style, message, type){
-	debugger;
 	var styles = {
 		success: "color: green; font-weight: italic;", 
 		error: "color: red; font-weight: italic;", 
