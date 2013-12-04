@@ -12,7 +12,7 @@ var ChatRoom = function(chat_style, array_of_nicknames){
 ChatRoom.prototype.drawUserList = function(){
 	jQuery(this.user_list_selector).html('');
 	for(var inhabitant in this.inhabitants){
-		jQuery(this.user_list_selector).append(inhabitant + '<br />');
+		jQuery(this.user_list_selector).append('<span>'+inhabitant+'</span><br />');
 	}
 }
 

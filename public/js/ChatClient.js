@@ -49,6 +49,10 @@ socket.on('receive_whisper_message', function(data){
 	alert(str);
 });
 
-
+jQuery(document).on('click', '.userList span', function(e){
+	var nickname = jQuery(this).html();
+	var message = prompt('What would you like to whisper to '+nickname+'?');
+	socket.emit('send_whisper_message', {receiver_nickname: nickname, message: message});
+});
 
 
