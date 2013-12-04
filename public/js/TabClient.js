@@ -8,3 +8,9 @@ function makeTab(id,name){
         }
     })
 }
+
+jQuery(document).on('click', '#roomList li', function(e){
+	joinBuildingChat(jQuery(this).data('id'));
+	makeTab(jQuery(this).data('id'), jQuery(this).data('name'));
+	jQuery(this).hide();
+});
