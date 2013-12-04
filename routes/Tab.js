@@ -1,3 +1,3 @@
 exports.makeTab=function(req,res){
-    res.render("tab.ejs",{name:req.params.name});
+    res.render("tab.ejs",{id:req.params.id});
 }
