@@ -27,12 +27,70 @@
     <script src="/js/NicknameClient.js"></script>
     <script src="/js/BuildingClient.js"></script>
     <script src="/js/TabClient.js"></script>
+
+    <!--Google Maps API key  AIzaSyDU3H0Nf-iIF9GBRUZIPX4WqIru7pIhfNw-->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={AIzaSyDU3H0Nf-iIF9GBRUZIPX4WqIru7pIhfNw}&sensor=false"></script>
+
+
 </head>
 <body onLoad = "onLoad()">
 <script>
     function onLoad(){
         getUserLocation();
         makeTab('Nearby');
+        initialize();
+    }
+</script>
+<script>
+    var LAT = 0;
+    var LONG = 0;
+
+    function getUserLocation()
+    {
+        if (navigator.geolocation)
+        {
+            navigator.geolocation.watchPosition(getCoordinates, handleError, {frequency: 300000});  //updates user location every 5 minutes
+        }
+        else{console.log("Geolocation is not supported by this browser.");}
+    }
+    function getCoordinates(position)
+    {
+        LAT = position.coords.latitude;
+        LONG = position.coords.longitude;
+
+        var latlon=LAT+","+LONG;
+        socket.emit('location_update', {latitude: LAT, longitude: LONG});
+
+        var mapOptions = {
+            center: new google.maps.LatLng(LAT, LONG),
+            zoom: 8
+        };
+        var map = new google.maps.Map(document.getElementById("mapholder"), mapOptions);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(LAT, LONG),
+            title: (label || "You are here!")
+        });
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    }
+    function handleError(error)
+    {
+        switch(error.code)
+        {
+            case error.PERMISSION_DENIED:
+                console.log("User denied the request for Geolocation.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                console.log("Location information is unavailable.");
+                break;
+            case error.TIMEOUT:
+                console.log("The request to get user location timed out.");
+                break;
+            case error.UNKNOWN_ERROR:
+                console.log("An unknown error occurred.");
+                break;
+        }
     }
 </script>
 <div id="menus">
@@ -62,13 +120,6 @@
         <% }); %>
     </ul>
 </div>
-<div id="mapholder"><p>We're working on getting a map in here, we</p><p>need a URL to have it display.</p></div>   <!--MOVE THIS MAP-->
-
-<!--Google Maps API key  AIzaSyDU3H0Nf-iIF9GBRUZIPX4WqIru7pIhfNw -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={AIzaSyDU3H0Nf-iIF9GBRUZIPX4WqIru7pIhfNw}&sensor=false"></script>
-<script type="text/javascript" src="/js/LocationClient.js"></script>
-<!-- <div id="mapholder"></div>
-This will have to go where we want the map to appear on the screen.-->
-<p id="output">Current location: *This will be removed once all location aspects are working.*</p>
+<div id="mapholder"><p>We're working on getting a map in here, we</p><p>need a URL to have it display.</p></div>
 </body>
 </html>
