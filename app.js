@@ -16,6 +16,7 @@ var Auth = require('./routes/Auth');
 var UserPool = require('./lib/UserPool');
 var ActiveUser = require('./lib/ActiveUser');
 var Mailman = require('./lib/Mailman');
+var Tab=require('./routes/Tab');
 
 var db = require('monk')('localhost/geochatdb'); // this points to the database
 var mail = require('nodemailer').mail;
@@ -90,6 +91,7 @@ app.get('/', Chat.index);
 app.get('/chat', Chat.chat);
 app.get('/users', Auth.userList(db));
 app.get('/logOut', Auth.logOut);
+app.get('/tab/:name',Tab.makeTab);
 app.post('/login', Auth.login(db));
 app.post('/register', Auth.register(db, mail));
 app.post('/confirm', Auth.confirmRegister(db));

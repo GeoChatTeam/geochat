@@ -10,10 +10,9 @@ body{
     padding: 0;
     width: 1084px;
 }
-#output{
+#nicknameBox{
     border-left: solid 1px #b7ddf2;
     float: right;
-    padding: 1;
     padding-top: 10;
     padding-bottom: 10;
 }
@@ -25,6 +24,8 @@ body{
     padding: 0;
     width: 628px;
     height: 418px;
+    position: relative;
+    left: 186px;
 }
 .ui-tabs {
     position: relative;
@@ -70,7 +71,6 @@ current tab
 .ui-tabs .ui-tabs-panel {
     display: block;
     border-width: 0;
-    /*padding: 1em 1.4em;*/
     background: none;
     margin-top: 22px;
     margin-bottom: 58%;
@@ -120,7 +120,7 @@ ul{
     width: 440px;
     background-color: #ffffff;
     border: solid 1px #b7ddf2;
-    float: left;
+    position: absolute;
 }
 p{
     margin: 0;
@@ -132,17 +132,20 @@ p{
     border: solid 2px #b7ddf2;
     background: #ebf4fb;
     white-space: nowrap;
-    float: left;
+    position: absolute;
+    top: 44px;
+    left: 8px;
 }
 #roomList{
     overflow: scroll;
     height: 290px;
     width: 270px;
-    background-color: #ffffff;
+    background-color: #ebf4fb;
     border: solid 2px #b7ddf2;
     border-left: 0px;
     white-space: nowrap;
     position: absolute;
+    left: 824px;
 }
 #textEntry{
     overflow: scroll;
@@ -158,11 +161,13 @@ p{
 }
 #message{
     height: 132px;
-    width: 530px;
+    width: 520px;
     border: none;
     border-right: solid 1px #b7ddf2;
     padding: 0;
     margin: 0;
+    margin-left: 10px;
+    font-size: 12px;
 }
 button{
     clear:both;
@@ -180,7 +185,6 @@ button{
     overflow: scroll;
     height: 260px;
     width: 270px;
-    background-color: #ffffff;
     border-right: solid 2px #b7ddf2;
     border-bottom: solid 2px #b7ddf2;
     white-space: nowrap;
