@@ -43,7 +43,6 @@ socket.on('building_chat_joined', function(data){
 socket.on('nearby_chat_joined', function(data){
 	chat_rooms['nearby'] = new ChatRoom('nearby', data.inhabitants);
 	for(var i = 0; i < data.locations.length; i++){
-		debugger;
 		location_client.addMarker(data.inhabitants[i], data.locations[i].latitude, data.locations[i].longitude);
 	}
 });
