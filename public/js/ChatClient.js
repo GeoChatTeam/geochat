@@ -32,16 +32,18 @@ function sendBuildingMessage(building_id, message){
 
 socket.on('receive_nearby_message', function(data){
 	var display = jQuery('#tabs-nearby .chat');
-	display.append('<span style="color:red;">' + data.nickname + '</span>: ');
+	display.append('<span title="'+timeStamp()+'" style="color:red;">' + data.nickname + '</span>: ');
 	display.append(document.createTextNode(data.message));
 	display.append('<br />');
+  scrollDown('#tabs-nearby .chat');
 });
 
 socket.on('receive_building_message', function(data){
 	var display = jQuery('#tabs-' + data.building_id + ' .chat');
-	display.append('<span style="color:red;">' + data.nickname + '</span>: ');
+	display.append('<span title="'+timeStamp()+'" style="color:red;">' + data.nickname + '</span>: ');
 	display.append(document.createTextNode(data.message));
 	display.append('<br />');
+  scrollDown('#tabs-nearby .chat');
 });
 
 socket.on('receive_whisper_message', function(data){
@@ -55,4 +57,7 @@ jQuery(document).on('click', '.userList span', function(e){
 	socket.emit('send_whisper_message', {receiver_nickname: nickname, message: message});
 });
 
-
+function timeStamp(){
+  var time = new Date();
+  return '(' + time.toLocaleTimeString() + ')';
+}
