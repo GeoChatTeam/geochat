@@ -131,7 +131,7 @@ io.sockets.on('connection', function (socket) {
 	
 	socket.on('join_chatroom', function(data){
 		user_pool.eachUser(function(){
-			user.
+			//
 		});
 		//add chat_style to current_user.
 	});
