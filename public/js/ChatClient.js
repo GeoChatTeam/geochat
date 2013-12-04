@@ -31,13 +31,17 @@ function sendBuildingMessage(building_id, message){
 
 
 socket.on('receive_nearby_message', function(data){
-	var str = '<span color="red">' + data.nickname + '</span>: ' + data.message + '<br />';
-	jQuery('#tabs-nearby .chat').append(str);
+	var display = jQuery('#tabs-nearby .chat');
+	display.append('<span style="color:red;">' + data.nickname + '</span>: ');
+	display.append(document.createTextNode(data.message));
+	display.append('<br />');
 });
 
 socket.on('receive_building_message', function(data){
-	var str = '<span color="red">' + data.nickname + '</span>: ' + data.message + '<br />';
-	jQuery('#tabs-' + data.building_id + ' .chat').append(str);
+	var display = jQuery('#tabs-' + data.building_id + ' .chat');
+	display.append('<span style="color:red;">' + data.nickname + '</span>: ');
+	display.append(document.createTextNode(data.message));
+	display.append('<br />');
 });
 
 socket.on('receive_whisper_message', function(data){
