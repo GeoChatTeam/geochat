@@ -135,7 +135,7 @@ io.sockets.on('connection', function (socket) {
 		// get all users in the building
 			// let them know we entered
 		buildings[data.building_id].eachUser(function(user_in_building){
-			user_in_building.emit('user_joined_building', {nickname: current_user.nickname, building_id: data.building_id});	
+			user_in_building.socket.emit('user_joined_building', {nickname: current_user.nickname, building_id: data.building_id});	
 		});	
 	});
 	// leave_building(building_id)
