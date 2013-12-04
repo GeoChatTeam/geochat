@@ -130,21 +130,6 @@ io.sockets.on('connection', function (socket) {
 	});
 	
 	socket.on('message', function (data) {
-        // checks to make sure the user is authenticated and logged in and that the message was sent in the right format.
-        if(session.user_id === undefined || session.user_id === null){
-            console.log("message received from unauthenticated user");
-            return;
-        }
-        if(user_pool.find_by_user_id(session.user_id) === null){
-            console.log("message received from offline user");
-            return;
-        }
-        if(data.chat_style === undefined || data.message_type === undefined, data.message === undefined)
-        {
-            console.log("message received with invalid data");
-            return;
-        }
-		
         // receiver_id should be null unless chat_style === 'whisper'
 		mailman.handleMessageReceived(session.user_id, data.chat_style, data.receiver_id, data.message);
 	});
