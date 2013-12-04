@@ -41,7 +41,7 @@ function displayMessage(nickname, message, type){
 		alert('User with nickname ' + nickname + ' sent you a message: ' + message);
 	}
 		
-	//createTextNode is used so that whatever the user had input is treated as text and not markup
+	//createTextNode is used so user input is treated as text and not markup
 	jQuery('#chat-none').append('<span style="font-weight: bold; color: red;">' + nickname + '</span>: ');
 	jQuery('#chat-none').append(document.createTextNode(message))
 	jQuery('#chat-none').append('<br />');
