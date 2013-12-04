@@ -17,4 +17,5 @@ socket.on('user_in_building_nickname_updated', function(data){
 
 socket.on('user_nearby_nickname_updated', function(data){
 	chat_rooms['nearby'].nicknameChange(data.prev_nickname, data.new_nickname);
+	location_client.updateMarkerTitle(data.prev_nickname, data.new_nickname);
 });

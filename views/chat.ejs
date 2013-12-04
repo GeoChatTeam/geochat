@@ -19,80 +19,22 @@
     <script src="/socket.io/socket.io.js"></script>
 	
 	<script src="/js/PresenceClient.js"></script>
+	<!--Google Maps API key  AIzaSyB7Rh3B0j0VsvVZ9a50ttAWmM28LAUc838-->
+    <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="/js/LocationClient.js"></script>
     <script src="/js/ChatClient.js"></script>
     <script src="/js/NotificationClient.js"></script>
     <script src="/js/NicknameClient.js"></script>
     <script src="/js/TabClient.js"></script>
 
-    <!--Google Maps API key  AIzaSyB7Rh3B0j0VsvVZ9a50ttAWmM28LAUc838-->
-    <script type="text/javascript"
-            src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
-
 
 </head>
 <body onLoad = "onLoad()">
-<script>
-    function onLoad(){
-        getUserLocation();
-        initialize();
-    }
-</script>
-<script>
-    var LAT = 0;
-    var LONG = 0;
-
-    function getUserLocation()
-    {
-        if (navigator.geolocation)
-        {
-            navigator.geolocation.watchPosition(getCoordinates, handleError, {frequency: 300000});  //updates user location every 5 minutes
-        }
-        else{console.log("Geolocation is not supported by this browser.");}
-    }
-    function getCoordinates(position)
-    {
-        LAT = position.coords.latitude;
-        LONG = position.coords.longitude;
-
-        var latlon=LAT+","+LONG;
-        socket.emit('location_update', {latitude: LAT, longitude: LONG});
-
-        initialize();
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-    }
-    function initialize()
-    {
-        var mapOptions = {
-            center: new google.maps.LatLng(LAT, LONG),
-            zoom: 15
-        };
-        var map = new google.maps.Map(document.getElementById("mapholder"), mapOptions);
-        var marker = new google.maps.Marker({
-            map: map,
-            position: new google.maps.LatLng(LAT, LONG)
-        });
-        marker.setMap(map);
-    }
-    function handleError(error)
-    {
-        switch(error.code)
-        {
-            case error.PERMISSION_DENIED:
-                console.log("User denied the request for Geolocation.");
-                break;
-            case error.POSITION_UNAVAILABLE:
-                console.log("Location information is unavailable.");
-                break;
-            case error.TIMEOUT:
-                console.log("The request to get user location timed out.");
-                break;
-            case error.UNKNOWN_ERROR:
-                console.log("An unknown error occurred.");
-                break;
-        }
-    }
-</script>
+	<script>
+		function onLoad(){
+			var location_client = new LocationClient();
+		}
+	</script>
 <div id="menus">
     <ul>
         <li><p>Account</p>
@@ -100,7 +42,7 @@
                 <li><a href="logOut">Log out</a></li>
             </ul>
         </li>
-        <li><a href="updateLocation">Update Location</a></li>
+        <li><a id="update_location_button" href="updateLocation">Update Location</a></li>
         <form id="nicknameBox">Chatting As: <span id="current_nickname"></span></form>
     </ul>
 </div>
