@@ -52,6 +52,11 @@ body{
     text-decoration: none;
     border:solid 1px #b7ddf2;
     color: blue;
+    padding-right: 25px;
+
+}
+#noPad{
+    padding-right: .5em;
 }
 .ui-tabs .ui-tabs-nav li a:hover,
 .ui-tabs .ui-tabs-nav li a:active{

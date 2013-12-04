@@ -10,6 +10,7 @@
             $("#tabs").tabs({
                 closable: true
             });
+            jQuery(document).on('click','.close',function(){removeTab(jQuery(this).data("id"))})
             tabs.find(".ui-tabs-nav").sortable({
                 axis: "x",
                 stop: function() {
@@ -108,7 +109,7 @@
 </div>
 <div id="tabs" class="inline">
     <ul id="tab_list">
-        <li><a href="#tabs-nearby">Nearby</a></li>
+        <li><a id="noPad" href="#tabs-nearby">Nearby</a></li>
     </ul>
     <div id="tabs-nearby">
         <div class="chat"></div>
