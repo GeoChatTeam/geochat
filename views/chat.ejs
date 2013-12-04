@@ -4,10 +4,10 @@
     <link rel='stylesheet' href='/stylesheets/chat.css'/>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src='js/ui.tabs.closable.min.js'></script>
+    <script src='/js/ui.tabs.closable.min.js'></script>
     <script>
         $(function(){
-            var tabs=0;
+            var tabCount=0;
             $("#tabs").tabs({
                 closable: true
             });
@@ -37,7 +37,6 @@
 <script>
     function onLoad(){
         getUserLocation();
-        makeTab('Nearby');
         initialize();
     }
 </script>
@@ -105,11 +104,6 @@
 </div>
 <div id="tabs" class="inline">
     <ul id="tab_list">
-        <li><a href="#tabs-none">Nearby</a></li>
-        <li><a href="#tabs-0">Berkshire</a></li>
-        <li><a href="#tabs-1">Worcester</a></li>
-        <li><a href="#tabs-2">Hampshire</a></li>
-        <li><a href="#tabs-3">Franklin</a></li>
     </ul>
 </div>
 
