@@ -45,11 +45,17 @@ body{
     padding: 0;
     white-space: nowrap;
 }
-.ui-tabs .ui-tabs-nav li a {
+.ui-tabs .ui-tabs-nav li a,
+.ui-tabs .ui-tabs-nav li a:visited{
     float: none;
     padding: .5em 1em;
     text-decoration: none;
     border:solid 1px #b7ddf2;
+    color: blue;
+}
+.ui-tabs .ui-tabs-nav li a:hover,
+.ui-tabs .ui-tabs-nav li a:active{
+    color: red;
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
     margin-bottom: -1px;

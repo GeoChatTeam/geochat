@@ -7,7 +7,6 @@
     <script src='/js/ui.tabs.closable.min.js'></script>
     <script>
         $(function(){
-            var tabCount=0;
             $("#tabs").tabs({
                 closable: true
             });
@@ -21,7 +20,7 @@
     </script>
     <script src="/socket.io/socket.io.js"></script>
 	
-	<script src="js/PresenceClient.js"></script>
+	<script src="/js/PresenceClient.js"></script>
     <script src="/js/ChatClient.js"></script>
     <script src="/js/NotificationClient.js"></script>
     <script src="/js/NicknameClient.js"></script>
@@ -109,7 +108,17 @@
 </div>
 <div id="tabs" class="inline">
     <ul id="tab_list">
+        <li><a href="#tabs-nearby">Nearby</a></li>
     </ul>
+    <div id="tabs-nearby">
+        <div class="chat"></div>
+        <form class="textEntry">
+            <input type="hidden" value='nearby'>
+            <input class="message" type="text" autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+        <div class="userList" class="inline"></div>
+    </div>
 </div>
 
 <div class="inline" id="roomList">
@@ -119,6 +128,6 @@
         <% }); %>
     </ul>
 </div>
-<div id="mapholder"><p>We're working on getting a map in here, we</p><p>need a URL to have it display.</p></div>
+<div id="mapholder"></div>
 </body>
 </html>
