@@ -109,11 +109,7 @@ io.sockets.on('connection', function (socket) {
 	user_pool.add(current_user);
 
 	// init(latitude, longitude)
-	socket.on('init', function(data){
-		current_user.socket.emit('nickname_granted', {nickname: current_user.nickname, building_id: 'nearby'});
-		user_pool.users_are_now_in_range(current_user.id, current_user.id);
-		current_user.socket.emit('user_in_range', {nickname: current_user.nickname});
-		
+	socket.on('init', function(data){		
 		// which users are in range in nearby chat?
 			// tell them we are in range
 		user_pool.delta_users_in_range(current_user, data.latitude, data.longitude).forEach(function(in_range_user){
@@ -130,6 +126,11 @@ io.sockets.on('connection', function (socket) {
 			nicknames.push(iterative_user.nickname);	
 		});
 		current_user.socket.emit('building_chat_joined', {building_id: 'nearby', inhabitants: nicknames});
+		
+		current_user.socket.emit('nickname_granted', {nickname: current_user.nickname, building_id: 'nearby'});
+		
+		user_pool.users_are_now_in_range(current_user.id, current_user.id);
+		current_user.socket.emit('user_in_range', {nickname: current_user.nickname});
 	});
 	// join_building(building_id)
 	socket.on('join_building', function(data){
