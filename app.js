@@ -127,6 +127,12 @@ io.sockets.on('connection', function (socket) {
 		// update the building list to include him/her
 		buildings[data.building_id].users[current_user.id] = true;
 		
+		var users_in_building = [];
+		buildings[data.building_id].users.forEach(function(user_in_building){
+				users_in_building.push(user_in_building.nickname);
+		});
+		current_user.socket.emit('building_chat_joined', {building_id: data.building_id, inhabitants: users_in_building});
+		
 		// get all users in the building
 			// let them know we entered
 		buildings[data.building_id].users.forEach(function(user_in_building){
@@ -227,3 +233,4 @@ io.sockets.on('connection', function (socket) {
 server.listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
 });
+
