@@ -217,9 +217,9 @@ io.sockets.on('connection', function (socket) {
 	socket.on('send_building_message', function(data){
 		mailman.handle_building_message(current_user.id, data.message, data.building_id);
 	});
-	// send_whisper_message(receiver_id, message)
+	// send_whisper_message(receiver_nickname, message)
 	socket.on('send_whisper_message', function(data){
-		mailman.handle_whisper_message(current_user.id, data.message, data.receiver_id);
+		mailman.handle_whisper_message(current_user.id, data.message, data.receiver_nickname);
 	});
 	// disconnect()
 	socket.on('disconnect', function(data){
