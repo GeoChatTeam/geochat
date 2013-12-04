@@ -4,14 +4,11 @@
     <link rel='stylesheet' href='/stylesheets/chat.css'/>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src='/js/ui.tabs.closable.min.js'></script>
     <script>
         $(function(){
-            $("#tabs").tabs({
-                closable: true
-            });
+            $("#tabs").tabs();
             jQuery(document).on('click','.close',function(){removeTab(jQuery(this).data("id"))})
-            tabs.find(".ui-tabs-nav").sortable({
+            $("#tabs").find(".ui-tabs-nav").sortable({
                 axis: "x",
                 stop: function() {
                     tabs.tabs( "refresh" );
