@@ -15,6 +15,7 @@ var Building = require('./routes/Building');
 var Auth = require('./routes/Auth');
 var UserPool = require('./lib/UserPool');
 var ActiveUser = require('./lib/ActiveUser');
+var Buildings = require('./lib/Building');
 var Mailman = require('./lib/Mailman');
 var Tab=require('./routes/Tab');
 
@@ -23,6 +24,7 @@ var mail = require('nodemailer').mail;
 
 var EXPRESS_SID_KEY = 'express.sid';
 var COOKIE_SECRET = 'qwerty1234567890';
+var RANGE = 400;
 
 var cookieParser = express.cookieParser(COOKIE_SECRET);
 var sessionStore = new express.session.MemoryStore();
@@ -96,51 +98,129 @@ app.post('/login', Auth.login(db));
 app.post('/register', Auth.register(db, mail));
 app.post('/confirm', Auth.confirmRegister(db));
 
-//our instance of UserPool (which is defined in lib/UserPool.js)
 var user_pool = new UserPool();
-//our instance of Mailman (which is defined in lib/Mailman.js)
-// *** replace null with the users database. the mailman needs access to the active users (user_pool) and the users
-var mailman = new Mailman(user_pool, null);
+var buildings = Buildings.createAll();
+var mailman = new Mailman(user_pool, buildings, RANGE);
 
 //socket things below. there are basically routes.
 io.sockets.on('connection', function (socket) {
 	var session = socket.handshake.session;
-	var current_user = new ActiveUser(session.user_id, null, [0], socket);
+	
+	var current_user = new ActiveUser(session.user_id, socket);
 	user_pool.add(current_user);
 
-	socket.on('location_update', function(data){
-		current_user.updateLocation({longitude: data.longitude, latitude: data.latitude});
-	});
-  
-	socket.on('nickname_update', function(data){
-		if(user_pool.nicknameUnique(data.nickname)){
-			user_pool.eachUser(function(user){
-				user.announceNicknameChange(current_user.getNickname(), data.nickname);
-			});
-			current_user.updateNickname(data.nickname);
+	// init(latitude, longitude)
+	socket.on('init', function(data){
+		// which users are in range in nearby chat?
+			// tell them we are in range
+		user_pool.delta_users_in_range(current_user, data.latitude, data.longitude).forEach(function(in_range_user){
+			// update in range data structure
+			user_pool.users_are_now_in_range(current_user.id, in_range_user.id); // ******* need to make
 			
-		} else {
+			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname});	
+		});
+		
+		current_user.location = {latitude: data.latitude, longitude: data.longitude};
+	});
+	// join_building(building_id)
+	socket.on('join_building', function(data){
+		// update the building list to include him/her
+		buildings[data.building_id].users[current_user.id] = true;
+		
+		// get all users in the building
+			// let them know we entered
+		buildings[data.building_id].users.forEach(function(user_in_building){
+			user_in_building.emit('user_joined_building', {nickname: current_user.nickname, building_id: data.building_id});	
+		});	
+	});
+	// leave_building(building_id)
+	socket.on('leave_building', function(data){
+		// update building list to no longer include him/her
+		delete buildings[data.building_id].users[current_user.id];
+		
+		// get all the users in the building
+			// tell them we left
+		buildings[data.building_id].users.forEach(function(user_in_building){
+			user_in_building.emit('user_left_building', {nickname: current_user.nickname, building_id: data.building_id});	
+		});
+	});
+	// update_location(latitude, longitude)
+	socket.on('update_location', function(data){
+		user_pool.delta_users_out_of_range(current_user, data.latitude, data.longitude).forEach(function(out_of_range_user){
+			// update in range data structure
+			user_pool.users_are_now_out_of_range(current_user.id, out_of_range_user.id); // ******* need to make
+			
+			out_of_range_user.socket.emit('user_out_of_range', {nickname: current_user.nickname});	
+		});
+		
+		user_pool.delta_users_in_range(current_user, data.latitude, data.longitude).forEach(function(in_range_user){
+			// update in range data structure
+			user_pool.users_are_now_in_range(current_user.id, in_range_user.id); // ******* need to make
+			
+			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname});	
+		});
+		
+		current_user.location = {latitude: data.latitude, longitude: data.longitude};
+	});
+	// update_nickname(nickname)
+	socket.on('update_nickname', function(data){
+		if(user_pool.nicknameUnique(data.nickname)){
+			user_pool.users_in_range(current_user).forEach(function(in_range_user){
+				in_range_user.socket.emit('user_nearby_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname});	
+			});
+			
+			for(var i = 0; i < buildings.length; i++){
+				var building = buildings[i];
+				
+				if(building[current_user.id]){
+					building.users.forEach(function(user_in_building){
+						user_in_building.socket.emit('user_in_building_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname, building_id: i});	
+					});	
+				}
+			}
+			
+			current_user.nickname = data.nickname;
+		} 
+		else {
 			current_user.sendNotification('error', ('The nickname ' + data.nickname + ' is in use, please try another'));
 		}
 	});
-	
-	socket.on('message', function (data) {
-        // receiver_id should be null unless chat_style === 'whisper'
-		mailman.handleMessageReceived(session.user_id, data.chat_style, data.receiver_id, data.message);
+	// send_nearby_message(message)
+	socket.on('send_nearby_message', function(data){
+		mailman.handle_nearby_message(current_user.id, data.message);
 	});
-	
-	socket.on('join_chatroom', function(data){
-		user_pool.eachUser(function(){
-			//
-		});
-		//add chat_style to current_user.
+	// send_building_message(building_id, message)
+	socket.on('send_building_message', function(data){
+		mailman.handle_building_message(current_user.id, data.message, data.building_id);
 	});
-  
+	// send_whisper_message(receiver_id, message)
+	socket.on('send_whisper_message', function(data){
+		mailman.handle_whisper_message(current_user.id, data.message, data.receiver_id);
+	});
+	// disconnect()
 	socket.on('disconnect', function(data){
-		user_pool.eachUser(function(user){
-			user.announceDepartureOf(current_user);
+		// notify nearby chat
+		user_pool.users.forEach(function(nearby_user){
+			nearby_user.emit('user_out_of_range', {nickname: current_user.nickname});	
 		});
-		user_pool.remove(current_user.user_id);
+		
+		// notifify users from buildings
+		for(var i = 0; i < buildings.length; i++){
+			var building = buildings[i];
+				
+			if(building[current_user.id]){
+				building.users.forEach(function(user_in_building){
+					user_in_building.socket.emit('user_left_building', {nickname: current_user.nickname, building_id: i});	
+				});	
+				
+				// remove from buildings
+				delete building[current_user.id];
+			}
+		}
+		
+		
+		// remove from user pool
+		user_pool.remove(current_user);
 	});
 });
 
