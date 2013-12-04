@@ -116,7 +116,7 @@ io.sockets.on('connection', function (socket) {
 			// update in range data structure
 			user_pool.users_are_now_in_range(current_user.id, in_range_user.id);
 			
-			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname});	
+			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname, latitude: current_user.getLatitude(), longitude: current_user.getLongitude()});	
 		});
 		
 		current_user.location = {latitude: data.latitude, longitude: data.longitude};
@@ -130,7 +130,7 @@ io.sockets.on('connection', function (socket) {
 		current_user.socket.emit('nickname_granted', {nickname: current_user.nickname, building_id: 'nearby'});
 		
 		user_pool.users_are_now_in_range(current_user.id, current_user.id);
-		current_user.socket.emit('user_in_range', {nickname: current_user.nickname});
+		current_user.socket.emit('user_in_range', {nickname: current_user.nickname, latitude: current_user.getLatitude(), longitude: current_user.getLongitude()});
 	});
 	// join_building(building_id)
 	socket.on('join_building', function(data){
@@ -177,7 +177,7 @@ io.sockets.on('connection', function (socket) {
 			// update in range data structure
 			user_pool.users_are_now_in_range(current_user.id, in_range_user.id);
 			
-			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname});	
+			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname, latitude: current_user.getLatitude(), longitude: current_user.getLongitude()});	
 		});
 		
 		current_user.location = {latitude: data.latitude, longitude: data.longitude};
