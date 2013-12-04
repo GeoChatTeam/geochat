@@ -24,7 +24,6 @@ var mail = require('nodemailer').mail;
 
 var EXPRESS_SID_KEY = 'express.sid';
 var COOKIE_SECRET = 'qwerty1234567890';
-var RANGE = 400;
 
 var cookieParser = express.cookieParser(COOKIE_SECRET);
 var sessionStore = new express.session.MemoryStore();
@@ -100,7 +99,7 @@ app.post('/confirm', Auth.confirmRegister(db));
 
 var user_pool = new UserPool();
 var buildings = Buildings.createAll();
-var mailman = new Mailman(user_pool, buildings, RANGE);
+var mailman = new Mailman(user_pool, buildings);
 
 //socket things below. there are basically routes.
 io.sockets.on('connection', function (socket) {
@@ -115,7 +114,7 @@ io.sockets.on('connection', function (socket) {
 			// tell them we are in range
 		user_pool.delta_users_in_range(current_user, data.latitude, data.longitude).forEach(function(in_range_user){
 			// update in range data structure
-			user_pool.users_are_now_in_range(current_user.id, in_range_user.id); // ******* need to make
+			user_pool.users_are_now_in_range(current_user.id, in_range_user.id);
 			
 			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname});	
 		});
@@ -125,17 +124,17 @@ io.sockets.on('connection', function (socket) {
 	// join_building(building_id)
 	socket.on('join_building', function(data){
 		// update the building list to include him/her
-		buildings[data.building_id].users[current_user.id] = true;
+		buildings[data.building_id].users[current_user.id] = current_user;
 		
 		var users_in_building = [];
-		buildings[data.building_id].users.forEach(function(user_in_building){
+		buildings[data.building_id].eachUser(function(user_in_building){
 				users_in_building.push(user_in_building.nickname);
 		});
 		current_user.socket.emit('building_chat_joined', {building_id: data.building_id, inhabitants: users_in_building});
 		
 		// get all users in the building
 			// let them know we entered
-		buildings[data.building_id].users.forEach(function(user_in_building){
+		buildings[data.building_id].eachUser(function(user_in_building){
 			user_in_building.emit('user_joined_building', {nickname: current_user.nickname, building_id: data.building_id});	
 		});	
 	});
@@ -146,7 +145,7 @@ io.sockets.on('connection', function (socket) {
 		
 		// get all the users in the building
 			// tell them we left
-		buildings[data.building_id].users.forEach(function(user_in_building){
+		buildings[data.building_id].eachUser(function(user_in_building){
 			user_in_building.emit('user_left_building', {nickname: current_user.nickname, building_id: data.building_id});	
 		});
 	});
@@ -154,14 +153,14 @@ io.sockets.on('connection', function (socket) {
 	socket.on('update_location', function(data){
 		user_pool.delta_users_out_of_range(current_user, data.latitude, data.longitude).forEach(function(out_of_range_user){
 			// update in range data structure
-			user_pool.users_are_now_out_of_range(current_user.id, out_of_range_user.id); // ******* need to make
+			user_pool.users_are_now_out_of_range(current_user.id, out_of_range_user.id);
 			
 			out_of_range_user.socket.emit('user_out_of_range', {nickname: current_user.nickname});	
 		});
 		
 		user_pool.delta_users_in_range(current_user, data.latitude, data.longitude).forEach(function(in_range_user){
 			// update in range data structure
-			user_pool.users_are_now_in_range(current_user.id, in_range_user.id); // ******* need to make
+			user_pool.users_are_now_in_range(current_user.id, in_range_user.id);
 			
 			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname});	
 		});
@@ -179,7 +178,7 @@ io.sockets.on('connection', function (socket) {
 				var building = buildings[i];
 				
 				if(building[current_user.id]){
-					building.users.forEach(function(user_in_building){
+					building.eachUser(function(user_in_building){
 						user_in_building.socket.emit('user_in_building_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname, building_id: i});	
 					});	
 				}
@@ -206,7 +205,7 @@ io.sockets.on('connection', function (socket) {
 	// disconnect()
 	socket.on('disconnect', function(data){
 		// notify nearby chat
-		user_pool.users.forEach(function(nearby_user){
+		user_pool.eachUser(function(nearby_user){
 			nearby_user.emit('user_out_of_range', {nickname: current_user.nickname});	
 		});
 		
@@ -215,7 +214,7 @@ io.sockets.on('connection', function (socket) {
 			var building = buildings[i];
 				
 			if(building[current_user.id]){
-				building.users.forEach(function(user_in_building){
+				building.eachUserh(function(user_in_building){
 					user_in_building.socket.emit('user_left_building', {nickname: current_user.nickname, building_id: i});	
 				});	
 				
