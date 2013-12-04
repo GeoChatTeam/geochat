@@ -31,7 +31,7 @@ var LocationClient = function(){
 			var long = pos.coords.longitude;
 			var position = new google.maps.LatLng(lat, long);
 
-			socket.emit('location_update', {latitude: lat, longitude: long});
+			socket.emit('update_location', {latitude: lat, longitude: long});
 
 			that.marker.setPosition(position);
 			//this might not actually update the map. might need to do:
@@ -88,23 +88,26 @@ function handleError(error)
 	}
 }
 
-jQuery(document).on('click', '#update_location_button' ,function(e){
-//	if(navigator.geolocation){
-//		navigator.geolocation.getCurrentPosition(function(pos){
-//			var lat = pos.coords.latitude;
-//			var long = pos.coords.longitude;
-//			var position = new google.maps.LatLng(lat, long);
-//
-//			socket.emit('location_update', {latitude: lat, longitude: long});
-//
-//			this.marker.setPosition(position);
-//			//this might not actually update the map. might need to do:
-//			//this.marker.setMap(null);
-//			//this.marker.setMap(this.map);
-//		}, handleError);
-//	} else {
-//		console.log("Geolocation is not supported by this browser.");
-//	}
-//	
+LocationClient.prototype.manual_update_listener = function(e){
+	debugger;
+	var that = this;
+	if(navigator.geolocation){
+		navigator.geolocation.getCurrentPosition(function(pos){
+			var lat = pos.coords.latitude;
+			var long = pos.coords.longitude;
+			var position = new google.maps.LatLng(lat, long);
+
+			socket.emit('update_location', {latitude: lat, longitude: long});
+
+			that.marker.setPosition(position);
+			//this might not actually update the map. might need to do:
+			//this.marker.setMap(null);
+			//this.marker.setMap(this.map);
+		}, handleError);
+	} else {
+		console.log("Geolocation is not supported by this browser.");
+	}
+	
 	e.preventDefault();
-});
+}
+

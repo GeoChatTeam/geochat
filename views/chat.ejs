@@ -34,7 +34,9 @@
 	<script>
 		function onLoad(){
 			location_client = new LocationClient();
+			jQuery(document).on('click', '#update_location_button', location_client.manual_update_listener);
 		}
+		
 	</script>
 <div id="menus">
     <ul>
