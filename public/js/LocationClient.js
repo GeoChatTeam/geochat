@@ -89,7 +89,6 @@ function handleError(error)
 }
 
 LocationClient.prototype.manual_update_listener = function(e){
-	debugger;
 	var that = this;
 	if(navigator.geolocation){
 		navigator.geolocation.getCurrentPosition(function(pos){
