@@ -114,7 +114,7 @@ ul{
     margin-top: 30px;
     display: table-column;
 }
-#chat{
+.chat{
     overflow: scroll;
     height: 387px;
     width: 440px;
@@ -125,7 +125,7 @@ ul{
 p{
     margin: 0;
 }
-#userList{
+.userList{
     overflow: scroll;
     height: 552px;
     width: 182px;
@@ -147,7 +147,7 @@ p{
     position: absolute;
     left: 824px;
 }
-#textEntry{
+.textEntry{
     overflow: scroll;
     height: 132px;
     width: 630px;
