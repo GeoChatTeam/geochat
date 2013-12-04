@@ -220,7 +220,7 @@ io.sockets.on('connection', function (socket) {
 			var building = buildings[i];
 				
 			if(building[current_user.id]){
-				building.eachUserh(function(user_in_building){
+				building.eachUser(function(user_in_building){
 					user_in_building.socket.emit('user_left_building', {nickname: current_user.nickname, building_id: i});	
 				});	
 				
@@ -231,7 +231,7 @@ io.sockets.on('connection', function (socket) {
 		
 		
 		// remove from user pool
-		user_pool.remove(current_user);
+		delete user_pool.users[current_user.id];
 	});
 });
 
