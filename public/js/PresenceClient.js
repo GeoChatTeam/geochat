@@ -10,14 +10,34 @@ socket.on('error', function(data){
 
 var chat_rooms = {};
 
-socket.on('room_enter', function(data){
-	
+socket.on('user_joined_building', function(data){
+	chat_rooms[data.building_id].user_entered(data.nickname);
 });
 
-socket.on('room_leave', function(data){ //{nickname, room}
-	
+socket.on('user_left_building', function(data){
+	chat_rooms[data.building_id].user_left(data.nickname);
 });
 
-socket.on('nickname_change', function(data){
-	
+socket.on('user_in_range', function(data){
+	chat_rooms['nearby'].user_entered(data.nickname);
+	//update markers
 });
+
+socket.on('user_out_of_range', function(data){
+	chat_rooms['nearby'].user_left(data.nickname);
+	//update markers
+});
+
+//this is for when the current user joins a building chat
+socket.on('building_chat_joined', function(data){
+	chat_rooms[data.building_id] = new ChatRoom(data.building_id, data.inhabitants);
+});
+
+function joinBuildingChat(building_id){
+	socket.emit('join_building', {building_id: building_id});
+}
+
+function leaveBuildingChat(building_id){
+	socket.emit('leave_building', {building_id: building_id});
+	delete chat_rooms[building_id];
+}

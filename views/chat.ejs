@@ -7,7 +7,7 @@
     <script>
         $(function(){
             $("#tabs").tabs();
-            jQuery(document).on('click','.close',function(){removeTab(jQuery(this).data("id"))})
+            
             $("#tabs").find(".ui-tabs-nav").sortable({
                 axis: "x",
                 stop: function() {

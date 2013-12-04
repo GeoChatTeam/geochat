@@ -19,7 +19,16 @@ function removeTab(id){
 }
 
 jQuery(document).on('click', '#roomList li', function(e){
-	joinBuildingChat(jQuery(this).data('id'));
-	makeTab(jQuery(this).data('id'), jQuery(this).data('name'));
+	var building_id = jQuery(this).data('id');
+	var building_name = jQuery(this).data('name');
+	makeTab(building_id, building_name);
 	jQuery(this).hide();
+	joinBuildingChat(building_id);
+});
+
+jQuery(document).on('click','.close',function(){
+	var building_id = jQuery(this).data("id");
+	removeTab(building_id);
+	jQuery('#roomList li[data-id="'+ buidling_id+'"]').show();
+	leaveBuildingChat(building_id);
 });
