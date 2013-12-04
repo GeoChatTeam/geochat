@@ -125,7 +125,7 @@ io.sockets.on('connection', function (socket) {
 		user_pool.users_in_range(current_user).forEach(function(iterative_user){
 			nicknames.push(iterative_user.nickname);	
 		});
-		current_user.socket.emit('building_chat_joined', {building_id: 'nearby', inhabitants: nicknames});
+		current_user.socket.emit('nearby_chat_joined', {inhabitants: nicknames});
 		
 		current_user.socket.emit('nickname_granted', {nickname: current_user.nickname, building_id: 'nearby'});
 		
