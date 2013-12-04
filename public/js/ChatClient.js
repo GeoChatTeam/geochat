@@ -32,12 +32,12 @@ function sendBuildingMessage(building_id, message){
 
 socket.on('receive_nearby_message', function(data){
 	var str = '<span color="red">' + data.nickname + '</span>: ' + data.message + '<br />';
-	jQuery('#tabs-nearby .message').append(str);
+	jQuery('#tabs-nearby .chat').append(str);
 });
 
 socket.on('receive_building_message', function(data){
 	var str = '<span color="red">' + data.nickname + '</span>: ' + data.message + '<br />';
-	jQuery('#tabs-' + data.building_id + ' .message').append(str);
+	jQuery('#tabs-' + data.building_id + ' .chat').append(str);
 });
 
 socket.on('receive_whisper_message', function(data){
