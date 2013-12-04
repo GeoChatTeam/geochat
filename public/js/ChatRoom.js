@@ -30,6 +30,6 @@ ChatRoom.prototype.leave = function(nickname){
 ChatRoom.prototype.nicknameChange = function(prev_nickname, new_nickname){
 	delete this.inhabitants[prev_nickname];
 	this.inhabitants[new_nickname] = true;
-	displayNotification(this.chat_style, 'neautral', prev_nickname + ' is now known as ' + new_nickname);
+	displayNotification(this.chat_style, 'neutral', prev_nickname + ' is now known as ' + new_nickname);
 	this.drawPane();
 }
