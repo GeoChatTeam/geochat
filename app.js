@@ -110,6 +110,7 @@ io.sockets.on('connection', function (socket) {
 
 	// init(latitude, longitude)
 	socket.on('init', function(data){
+		current_user.socket.emit('nickname_granted', {nickname: current_user.nickname, building_id: 'nearby'});
 		user_pool.users_are_now_in_range(current_user.id, current_user.id);
 		current_user.socket.emit('user_in_range', {nickname: current_user.nickname});
 		
@@ -128,7 +129,6 @@ io.sockets.on('connection', function (socket) {
 		user_pool.users_in_range(current_user).forEach(function(iterative_user){
 			nicknames.push(iterative_user.nickname);	
 		});
-		
 		current_user.socket.emit('building_chat_joined', {building_id: 'nearby', inhabitants: nicknames});
 	});
 	// join_building(building_id)
