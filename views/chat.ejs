@@ -4,7 +4,7 @@
     <link rel='stylesheet' href='/stylesheets/chat.css'/>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src='/node_modules/ui.tabs.closable.min.js'></script>
+    <script src='js/ui.tabs.closable.min.js'></script>
     <script>
         $(function(){
             var tabs=0;
@@ -26,10 +26,15 @@
     <script src="/js/NotificationClient.js"></script>
     <script src="/js/NicknameClient.js"></script>
     <script src="/js/BuildingClient.js"></script>
-
+    <script src="/js/TabClient.js"></script>
 </head>
-<body onLoad = "getUserLocation()">
-<body onload="makeTab('Nearby')">
+<body onLoad = "onLoad()">
+<script>
+    function onLoad(){
+        getUserLocation();
+        makeTab('Nearby');
+    }
+</script>
 <div id="menus">
     <ul>
         <li><a href="account">Account</a>
