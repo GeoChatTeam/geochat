@@ -1,5 +1,5 @@
-function updateNickname(nickname){
-	socket.emit('update_nickname', {nickname: nickname});
+function updateNickname(nickname, building_id){
+	socket.emit('update_nickname', {nickname: nickname, building_id: building_id});
 }
 
 socket.on('nickname_granted', function(data){

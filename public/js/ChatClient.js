@@ -11,7 +11,7 @@ jQuery(document).on('submit', 'form.textEntry', function(e){
 	var matches = nicknameCommandRegEx.exec(message);
 	
 	if(matches){
-		nicknameUpdate(matches[1]);
+		updateNickname(matches[1], chat_style);
 	} else if(chat_style === 'nearby') {
 		sendNearbyMessage(message);
 	} else {
