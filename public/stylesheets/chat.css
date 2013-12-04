@@ -94,6 +94,10 @@ ul{
     position: relative;
     border-bottom-width: 0;
 }
+#menus p{
+    cursor: default;
+    text-decoration: underline;
+}
 #menus ul li{
     border:solid 1px #b7ddf2;
     background:#ebf4fb;
@@ -150,6 +154,13 @@ p{
     white-space: nowrap;
     position: absolute;
     left: 824px;
+}
+#roomList li{
+    font-size: 1.25em;
+}
+#roomList li:hover{
+    color: red;
+    cursor: pointer;
 }
 .textEntry{
     overflow: scroll;
