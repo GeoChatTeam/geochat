@@ -181,7 +181,7 @@ io.sockets.on('connection', function (socket) {
 			for(var i = 0; i < buildings.length; i++){
 				var building = buildings[i];
 				
-				if(building[current_user.id]){
+				if(building.users[current_user.id]){
 					building.eachUser(function(user_in_building){
 						user_in_building.socket.emit('user_in_building_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname, building_id: i});	
 					});	
@@ -219,13 +219,13 @@ io.sockets.on('connection', function (socket) {
 		for(var i = 0; i < buildings.length; i++){
 			var building = buildings[i];
 				
-			if(building[current_user.id]){
+			if(building.users[current_user.id]){
 				building.eachUser(function(user_in_building){
 					user_in_building.socket.emit('user_left_building', {nickname: current_user.nickname, building_id: i});	
 				});	
 				
 				// remove from buildings
-				delete building[current_user.id];
+				delete building.users[current_user.id];
 			}
 		}
 		
