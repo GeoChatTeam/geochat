@@ -15,7 +15,7 @@ var Building = require('./routes/Building');
 var Auth = require('./routes/Auth');
 var UserPool = require('./lib/UserPool');
 var ActiveUser = require('./lib/ActiveUser');
-var Buildings = require('./lib/Buildings');
+var Buildings = require('./lib/Building');
 var Mailman = require('./lib/Mailman');
 var Tab=require('./routes/Tab');
 
@@ -111,51 +111,75 @@ io.sockets.on('connection', function (socket) {
 
 	// init(latitude, longitude)
 	socket.on('init', function(data){
-		data.latitude;
-		data.longitude;
-		
-		// update lat/long of user
-		
 		// which users are in range in nearby chat?
 			// tell them we are in range
+		user_pool.delta_users_in_range(current_user, data.latitude, data.longitude).forEach(function(in_range_user){
+			// update in range data structure
+			user_pool.users_are_now_in_range(current_user.id, in_range_user.id); // ******* need to make
+			
+			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname});	
+		});
+		
+		current_user.location = {latitude: data.latitude, longitude: data.longitude};
 	});
 	// join_building(building_id)
 	socket.on('join_building', function(data){
-		data.building_id;
-		
 		// update the building list to include him/her
+		buildings[data.building_id].users[current_user.id] = true;
 		
 		// get all users in the building
 			// let them know we entered
-		
+		buildings[data.building_id].users.forEach(function(user_in_building){
+			user_in_building.emit('user_joined_building', {nickname: current_user.nickname, building_id: data.building_id});	
+		});	
 	});
 	// leave_building(building_id)
 	socket.on('leave_building', function(data){
-		data.building_id;
-		
 		// update building list to no longer include him/her
+		delete buildings[data.building_id].users[current_user.id];
 		
 		// get all the users in the building
 			// tell them we left
+		buildings[data.building_id].users.forEach(function(user_in_building){
+			user_in_building.emit('user_left_building', {nickname: current_user.nickname, building_id: data.building_id});	
+		});
 	});
 	// update_location(latitude, longitude)
 	socket.on('update_location', function(data){
-		data.latitude;
-		data.longitude;
+		user_pool.delta_users_out_of_range(current_user, data.latitude, data.longitude).forEach(function(out_of_range_user){
+			// update in range data structure
+			user_pool.users_are_now_out_of_range(current_user.id, out_of_range_user.id); // ******* need to make
+			
+			out_of_range_user.socket.emit('user_out_of_range', {nickname: current_user.nickname});	
+		});
 		
-		// which users are now out of range?
-			// tell them we have left the nearby chat
+		user_pool.delta_users_in_range(current_user, data.latitude, data.longitude).forEach(function(in_range_user){
+			// update in range data structure
+			user_pool.users_are_now_in_range(current_user.id, in_range_user.id); // ******* need to make
+			
+			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname});	
+		});
 		
-		// which users are now in range?
-			// tell them we have entered the nearby chat
+		current_user.location = {latitude: data.latitude, longitude: data.longitude};
 	});
 	// update_nickname(nickname)
 	socket.on('update_nickname', function(data){
 		if(user_pool.nicknameUnique(data.nickname)){
-			// announce to all users that are in contact with current_user that his/her nickname has been changed
+			user_pool.users_in_range(current_user).forEach(function(in_range_user){
+				in_range_user.socket.emit('user_nearby_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname});	
+			});
+			
+			for(var i = 0; i < buildings.length; i++){
+				var building = buildings[i];
+				
+				if(building[current_user.id]){
+					building.users.forEach(function(user_in_building){
+						user_in_building.socket.emit('user_in_building_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname, building_id: i});	
+					});	
+				}
+			}
 			
 			current_user.nickname = data.nickname;
-			
 		} 
 		else {
 			current_user.sendNotification('error', ('The nickname ' + data.nickname + ' is in use, please try another'));
@@ -175,13 +199,28 @@ io.sockets.on('connection', function (socket) {
 	});
 	// disconnect()
 	socket.on('disconnect', function(data){
-		// remove from user pool
-		
-		// remove from buildings
-		
 		// notify nearby chat
+		user_pool.users.forEach(function(nearby_user){
+			nearby_user.emit('user_out_of_range', {nickname: current_user.nickname});	
+		});
 		
 		// notifify users from buildings
+		for(var i = 0; i < buildings.length; i++){
+			var building = buildings[i];
+				
+			if(building[current_user.id]){
+				building.users.forEach(function(user_in_building){
+					user_in_building.socket.emit('user_left_building', {nickname: current_user.nickname, building_id: i});	
+				});	
+				
+				// remove from buildings
+				delete building[current_user.id];
+			}
+		}
+		
+		
+		// remove from user pool
+		user_pool.remove(current_user);
 	});
 });
 
