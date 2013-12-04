@@ -4,8 +4,10 @@ function getAllBuildings(){
 	//ajax to get all buildings
 }
 
-function joinBuildingChat(building_id){
-	//make ajax to tell server that we've entered the building chat.
+function joinBuildingChat(building_id, building_name){
+	socket.emit('join_chatroom', {chat_style: building_id});
+	makeTab(building_id, building_name);
+	
 }
 
 function leaveBuildingChat(building_id){
@@ -13,5 +15,5 @@ function leaveBuildingChat(building_id){
 }
 
 jQuery(document).on('click', '#roomList li', function(e){
-	makeTab(jQuery(this).data('id'), jQuery(this).data('name'))
+	joinBuildingChat(jQuery(this).data('id'), jQuery(this).data('name'));
 });

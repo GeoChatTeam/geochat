@@ -123,15 +123,17 @@ io.sockets.on('connection', function (socket) {
 			current_user.sendNotification('error', ('The nickname ' + data.nickname + ' is in use, please try another'));
 		}
 	});
-
-	socket.on('building', function(data){
-		//either add or delete building from chat_styles.
-		console.log('building: ' + data);
-	});
 	
 	socket.on('message', function (data) {
         // receiver_id should be null unless chat_style === 'whisper'
 		mailman.handleMessageReceived(session.user_id, data.chat_style, data.receiver_id, data.message);
+	});
+	
+	socket.on('join_chatroom', function(data){
+		user_pool.eachUser(function(){
+			user.
+		});
+		//add chat_style to current_user.
 	});
   
 	socket.on('disconnect', function(data){
