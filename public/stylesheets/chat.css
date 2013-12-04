@@ -188,7 +188,7 @@ button{
     clear:both;
     width:100px;
     height:132px;
-    background:#666666 url(img/button.png) no-repeat;
+    background-color:#666666;
     text-align:center;
     line-height:31px;
     color:#FFFFFF;

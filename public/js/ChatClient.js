@@ -1,53 +1,54 @@
-// SENDING
-
 // handling sending a nearby message to all
 jQuery(document).on('submit', 'form.textEntry', function(e){
-    var chat_style = jQuery(this).find("input[type='hidden']").val();
+    var chat_style = jQuery(this).data('id');
     var field = jQuery(this).find("input[type='text']");
     var message = field.val();
     field.val('');
     field.focus();
 
-	handleMessage(chat_style, message);
-	
-	e.preventDefault(); //stop from submitting
-});
-
-//message: String
-//chat_style: 'whisper', 'nearby', 'building'
-//reciever_id:
-// if chat_style === 'whisper' then must be a user_id
-// else then null
-function handleMessage(chat_style, message){		
 	//check if the message is a nickname command
 	var nicknameCommandRegEx = /^\/nick (\w+)/;
 	var matches = nicknameCommandRegEx.exec(message);
 	
 	if(matches){
-		socket.emit('nickname_update', {nickname: matches[1]});
+		nicknameUpdate(matches[1]);
+	} else if(chat_style === 'nearby') {
+		sendNearbyMessage(message);
 	} else {
-		socket.emit('message', {chat_style: chat_style, receiver_id: receiver_id, message: message});
+		sendBuildingMessage(chat_style, message);
 	}
-}
-
-//RECEIVING
-
-socket.on('message', function (data) {
-	displayMessage(data.nickname, data.message, data.type);
+	
+	e.preventDefault(); //stop from submitting
 });
 
-function displayMessage(nickname, message, type){
-	if(type === 'whisper'){
-		alert('User with nickname ' + nickname + ' sent you a message: ' + message);
-		return;
-	}
-		
-	//createTextNode is used so user input is treated as text and not markup
-	jQuery('#chat-none').append('<span style="font-weight: bold; color: red;">' + nickname + '</span>: ');
-	jQuery('#chat-none').append(document.createTextNode(message));
-	jQuery('#chat-none').append('<br />');
-	var objDiv = document.getElementById("tabs");
-	objDiv.scrollTop = objDiv.scrollHeight;
+function updateNickname(nickname){
+	socket.emit('update_nickname', {nickname: nickname});
 }
+
+function sendNearbyMessage(message){
+	socket.emit('send_nearby_message', {message: message});
+}
+
+function sendBuildingMessage(building_id, message){
+	socket.emit('send_building_message', {building_id: building_id, message: message});
+}
+
+
+socket.on('receive_nearby_message', function(data){
+	var str = '<span color="red">' + data.nickname + '</span>: ' + data.message + '<br />';
+	jQuery('#tabs-nearby .message').append(str);
+});
+
+socket.on('receive_building_message', function(data){
+	var str = '<span color="red">' + data.nickname + '</span>: ' + data.message + '<br />';
+	jQuery('#tabs-' + data.building_id + ' .message').append(str);
+});
+
+socket.on('receive_whisper_message', function(data){
+	var str = '(private message)' + data.nickname + ': ' + data.message;
+	alert(str);
+});
+
+
 
 
