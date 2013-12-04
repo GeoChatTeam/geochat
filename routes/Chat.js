@@ -1,4 +1,4 @@
-var buildings = require('../data/buildings.json');
+var buildings = require('../data/buildings_complete');
 
 exports.index = function(req, res){
 	res.render('home.ejs', {title: 'GEOCHAT', login_err: '', reg_err: ''});
