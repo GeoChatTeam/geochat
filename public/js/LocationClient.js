@@ -54,7 +54,7 @@ LocationClient.prototype.addMarker = function(nickname, latitude, longitude){
 
 LocationClient.prototype.removeMarker = function(nickname){
 	this.markers[nickname].setMap(null);
-	delete markers[nickname];
+	delete this.markers[nickname];
 }
 
 LocationClient.prototype.moveMarker = function(nickname, latitude, longitude){
