@@ -65,7 +65,7 @@ LocationClient.prototype.moveMarker = function(nickname, latitude, longitude){
 LocationClient.prototype.updateMarkerTitle = function(prev_nickname, new_nickname){
 	this.markers[prev_nickname].setTitle(new_nickname);
 	this.markers[new_nickname] = this.markers[prev_nickname];
-	delete markers[prev_nickname];
+	delete this.markers[prev_nickname];
 	//might need to redraw with setMap(null);
 }
 
