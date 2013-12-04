@@ -20,13 +20,17 @@ socket.on('user_left_building', function(data){
 
 socket.on('user_in_range', function(data){
 	chat_rooms['nearby'].user_entered(data.nickname);
-	//update markers
+	//TODO: add the user's marker, data.latitude, data.longitude
 });
 
 socket.on('user_out_of_range', function(data){
 	chat_rooms['nearby'].user_left(data.nickname);
-	//update markers
+	//TODO: remove the user's marker
 });
+
+socket.on('user_in_range_location_change', function(data){
+	//data.nickname, data.latitude, data.longitude
+})
 
 //this is for when the current user joins a building chat
 socket.on('building_chat_joined', function(data){

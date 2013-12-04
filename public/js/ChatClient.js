@@ -21,10 +21,6 @@ jQuery(document).on('submit', 'form.textEntry', function(e){
 	e.preventDefault(); //stop from submitting
 });
 
-function updateNickname(nickname){
-	socket.emit('update_nickname', {nickname: nickname});
-}
-
 function sendNearbyMessage(message){
 	socket.emit('send_nearby_message', {message: message});
 }
