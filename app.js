@@ -153,14 +153,14 @@ io.sockets.on('connection', function (socket) {
 	});
 	// leave_building(building_id)
 	socket.on('leave_building', function(data){
+		// update building list to no longer include him/her
+		delete buildings[data.building_id].users[current_user.id];
+		
 		// get all the users in the building
 			// tell them we left
 		buildings[data.building_id].eachUser(function(user_in_building){
 			user_in_building.socket.emit('user_left_building', {nickname: current_user.nickname, building_id: data.building_id});	
 		});
-		
-		// update building list to no longer include him/her
-		delete buildings[data.building_id].users[current_user.id];
 	});
 	// update_location(latitude, longitude)
 	socket.on('update_location', function(data){
