@@ -16,6 +16,7 @@ socket.on('user_joined_building', function(data){
 
 socket.on('user_left_building', function(data){
 	chat_rooms[data.building_id].user_left(data.nickname);
+	delete chat_rooms[building_id];
 });
 
 socket.on('user_in_range', function(data){
@@ -43,5 +44,4 @@ function joinBuildingChat(building_id){
 
 function leaveBuildingChat(building_id){
 	socket.emit('leave_building', {building_id: building_id});
-	delete chat_rooms[building_id];
 }
