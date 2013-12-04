@@ -123,6 +123,13 @@ io.sockets.on('connection', function (socket) {
 		});
 		
 		current_user.location = {latitude: data.latitude, longitude: data.longitude};
+		
+		var nicknames = [];
+		user_pool.users_in_range(current_user).forEach(function(iterative_user){
+			nicknames.push(iterative_user.nickname);	
+		});
+		
+		current_user.socket.emit('building_chat_joined', {building_id: 'nearby', inhabitants: nicknames});
 	});
 	// join_building(building_id)
 	socket.on('join_building', function(data){
