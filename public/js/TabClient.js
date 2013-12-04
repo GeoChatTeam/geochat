@@ -7,7 +7,7 @@ function makeTab(id,name){
                 return;
             }
             jQuery('#tabs').append(data);
-            jQuery('#tab_list').append('<li id="link-'+id+'"><a href="#tabs-'+id+'">'+name+'<button style="width: 20px; height: 20px; line-height: 0;padding: 2" class="close" data-id="'+id+'">X</button></a></li>');
+            jQuery('#tab_list').append('<li id="link-'+id+'"><a href="#tabs-'+id+'">'+name+' <button style="margin-left: 4px;width: 15px; height: 15px; line-height: 0;padding: 2" class="close" data-id="'+id+'">X</button></a></li>');
             $('#tabs').tabs('refresh');
             joinBuildingChat(id);
         }

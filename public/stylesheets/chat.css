@@ -210,3 +210,6 @@ button{
 .inline{
     display: inline-block;
 }
+.close {
+  cursor: pointer;
+}
