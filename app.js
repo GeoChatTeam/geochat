@@ -179,7 +179,7 @@ io.sockets.on('connection', function (socket) {
 			// update in range data structure
 			user_pool.users_are_now_in_range(current_user.id, in_range_user.id);
 			
-			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname, latitude: current_user.getLatitude(), longitude: current_user.getLongitude()});	
+			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname, latitude: data.latitude, longitude: data.longitude});	
 		});
 		
 		current_user.location = {latitude: data.latitude, longitude: data.longitude};

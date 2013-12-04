@@ -52,6 +52,6 @@ function joinBuildingChat(building_id){
 
 function leaveBuildingChat(building_id){
 	socket.emit('leave_building', {building_id: building_id});
-	chat_rooms[data.building_id].user_left(data.nickname);
-	delete chat_rooms[data.building_id];
+	chat_rooms[building_id].user_left(jQuery('#current_nickname').html());
+	delete chat_rooms[building_id];
 }
