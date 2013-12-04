@@ -151,6 +151,10 @@ io.sockets.on('connection', function (socket) {
 	});
 	// update_location(latitude, longitude)
 	socket.on('update_location', function(data){
+		user_pool.users_in_range(current_user).forEach(function(user_in_range){
+			user_in_range.socket.emit('user_in_range_location_change', {nickname: current_user.nickname, latitude: data.latitude, longitude: data.longitude});	
+		});
+		
 		user_pool.delta_users_out_of_range(current_user, data.latitude, data.longitude).forEach(function(out_of_range_user){
 			// update in range data structure
 			user_pool.users_are_now_out_of_range(current_user.id, out_of_range_user.id);
@@ -167,7 +171,7 @@ io.sockets.on('connection', function (socket) {
 		
 		current_user.location = {latitude: data.latitude, longitude: data.longitude};
 	});
-	// update_nickname(nickname)
+	// update_nickname(nickname, building_id)
 	socket.on('update_nickname', function(data){
 		if(user_pool.nicknameUnique(data.nickname)){
 			user_pool.users_in_range(current_user).forEach(function(in_range_user){
@@ -185,9 +189,11 @@ io.sockets.on('connection', function (socket) {
 			}
 			
 			current_user.nickname = data.nickname;
+			
+			current_user.socket.emit('nickname_granted', {nickname: data.nickname, building_id: data.building_id});
 		} 
 		else {
-			current_user.sendNotification('error', ('The nickname ' + data.nickname + ' is in use, please try another'));
+			current_user.socket.emit('nickname_denied', {nickname: data.nickname, building_id: data.building_id});
 		}
 	});
 	// send_nearby_message(message)
