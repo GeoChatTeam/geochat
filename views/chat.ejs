@@ -61,18 +61,22 @@
         var latlon=LAT+","+LONG;
         socket.emit('location_update', {latitude: LAT, longitude: LONG});
 
+        initialize();
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    }
+    function initialize()
+    {
         var mapOptions = {
             center: new google.maps.LatLng(LAT, LONG),
-            zoom: 8
+            zoom: 15
         };
         var map = new google.maps.Map(document.getElementById("mapholder"), mapOptions);
         var marker = new google.maps.Marker({
             map: map,
-            position: new google.maps.LatLng(LAT, LONG),
-            title: (label || "You are here!")
+            position: new google.maps.LatLng(LAT, LONG)
         });
-
-        google.maps.event.addDomListener(window, 'load', initialize);
+        marker.setMap(map);
     }
     function handleError(error)
     {
