@@ -8,6 +8,7 @@ var LocationClient = function(){
 			var lat = pos.coords.latitude;
 			var long = pos.coords.longitude;
 			socket.emit('init', {latitude: lat, longitude: long});
+			updateNickname('user-' + Math.random()*130214812);
 			var position = new google.maps.LatLng(lat, long);
 			
 			var mapOptions = {
