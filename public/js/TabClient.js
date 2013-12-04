@@ -9,6 +9,7 @@ function makeTab(id,name){
             jQuery('#tabs').append(data);
             jQuery('#tab_list').append('<li id="link-'+id+'"><a href="#tabs-'+id+'">'+name+'<button style="width: 20px; height: 20px; line-height: 0;padding: 2" class="close" data-id="'+id+'">X</button></a></li>');
             $('#tabs').tabs('refresh');
+            joinBuildingChat(id);
         }
     })
 }
@@ -23,7 +24,6 @@ jQuery(document).on('click', '#roomList li', function(e){
 	var building_name = jQuery(this).data('name');
 	makeTab(building_id, building_name);
 	jQuery(this).hide();
-	joinBuildingChat(building_id);
 });
 
 jQuery(document).on('click','.close',function(){
