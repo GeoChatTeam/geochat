@@ -211,7 +211,7 @@ io.sockets.on('connection', function (socket) {
 	// disconnect()
 	socket.on('disconnect', function(data){
 		// notify nearby chat
-		user_pool.eachUser(function(nearby_user){
+		user_pool.users_in_range(current_user).forEach(function(nearby_user){
 			nearby_user.emit('user_out_of_range', {nickname: current_user.nickname});	
 		});
 		
