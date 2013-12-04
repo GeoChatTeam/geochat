@@ -27,6 +27,11 @@ body{
     position: relative;
     left: 186px;
 }
+.chat{
+    width: 628px;
+    height: 388px;
+    overflow-y: scroll;
+}
 .ui-tabs {
     position: relative;
 }
@@ -209,7 +214,4 @@ button{
 }
 .inline{
     display: inline-block;
-}
-.close {
-  cursor: pointer;
 }

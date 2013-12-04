@@ -9,6 +9,7 @@ function makeTab(id,name){
             jQuery('#tabs').append(data);
             jQuery('#tab_list').append('<li id="link-'+id+'"><a href="#tabs-'+id+'">'+name+' <button style="margin-left: 4px;width: 15px; height: 15px; line-height: 0;padding: 2" class="close" data-id="'+id+'">X</button></a></li>');
             $('#tabs').tabs('refresh');
+            $('#tabs').tabs('option',"active",($('#tab_list li').length-1));
             joinBuildingChat(id);
         }
     })
