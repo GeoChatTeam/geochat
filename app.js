@@ -122,10 +122,12 @@ io.sockets.on('connection', function (socket) {
 		current_user.location = {latitude: data.latitude, longitude: data.longitude};
 		
 		var nicknames = [];
+		var locations = [];
 		user_pool.users_in_range(current_user).forEach(function(iterative_user){
 			nicknames.push(iterative_user.nickname);	
+			locations.push({latitude: iterative_user.getLatitude(), longitude: iterative_user.getLongitude()});
 		});
-		current_user.socket.emit('nearby_chat_joined', {inhabitants: nicknames});
+		current_user.socket.emit('nearby_chat_joined', {inhabitants: nicknames, locations: locations});
 		
 		current_user.socket.emit('nickname_granted', {nickname: current_user.nickname, building_id: 'nearby'});
 		
