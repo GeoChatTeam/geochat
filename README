@@ -1,6 +1,18 @@
-How to start GeoChat in development:
+How to begin GeoChat development:
 
-1) cd into geochat root directory
+1) if cloning by https:
+		- git clone https://github.com/GeoChatTeam/geochat.git
+	 if cloning by ssh:
+	  - git clone git@github.com:GeoChatTeam/geochat.git
+
+2) cd into geochat root directory
  - cd geochat
-2) start the geochat server
- - nodejs app.js
+3) install dependencies
+ - npm install
+4) install mongodb on mac with homebrew
+ - brew update
+ - brew install mongodb
+4) start mongo dameon
+ - mongod
+3) start the geochat server
+ - node app.js
