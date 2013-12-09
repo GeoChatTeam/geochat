@@ -1,3 +1,7 @@
+// This code was written by Jonathan Cooper-Ellis.
+
+// This is the route to handle login attempts.
+// It validates login credentials, assigns their user_id, and redirects to the chat page.
 exports.login = function(db) {
 	return function(req,res) {
 		
@@ -33,6 +37,10 @@ exports.login = function(db) {
 	};
 };
 
+// This is the route to handle registration requests.
+// It checks for legitimate registration information, checks that the user
+// if not already registered, adds them to a collection of prospective users
+// pending email verification, and sends a verification email.
 exports.register = function(db, mail) {
 	return function(req,res) {
 
@@ -105,6 +113,10 @@ exports.register = function(db, mail) {
 	};
 };
 
+// This is the route to handle registration confirmation, when the user
+// clicks the confirmation button in the verification email.
+// It moves their information from the prospective users collection
+// to the users collection so that they are permitted to login.
 exports.confirmRegister = function(db) {
 	return function(req,res) {
 
