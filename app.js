@@ -110,8 +110,7 @@ io.sockets.on('connection', function (socket) {
 
 	// init(latitude, longitude)
 	socket.on('init', function(data){		
-		// which users are in range in nearby chat?
-			// tell them we are in range
+		// users that are in range in nearby chat
 		user_pool.delta_users_in_range(current_user, data.latitude, data.longitude).forEach(function(in_range_user){
 			// update in range data structure
 			user_pool.users_are_now_in_range(current_user.id, in_range_user.id);
@@ -122,11 +121,8 @@ io.sockets.on('connection', function (socket) {
 		// we can now update the user's location. we must set this after calling "user_pool.delta_users_in_range".
 		current_user.location = {latitude: data.latitude, longitude: data.longitude};
 		
-		var nicknames_and_locations = user_pool.nicknames_and_locations_of_nearby_to(current_user)
-		current_user.socket.emit('nearby_chat_joined', {inhabitants: nicknames_and_locations[0], locations: nicknames_and_locations[1], current_user_nickname: current_user.nickname});
-
-		user_pool.users_are_now_in_range(current_user.id, current_user.id);
-		current_user.socket.emit('user_in_range', {nickname: current_user.nickname, latitude: current_user.getLatitude(), longitude: current_user.getLongitude()});
+		var nicknames_and_locations = user_pool.nicknames_and_locations_of_nearby_to(current_user);
+		current_user.socket.emit('nearby_chat_joined', {inhabitants: nicknames_and_locations[0], locations: nicknames_and_locations[1], current_user_nickname: current_user.nickname, current_user_longitude: current_user.getLongitude(), current_user_latitude: current_user.getLatitude()});
 	});
 	// join_building(building_id)
 	socket.on('join_building', function(data){

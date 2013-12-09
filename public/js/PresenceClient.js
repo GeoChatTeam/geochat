@@ -47,6 +47,9 @@ socket.on('nearby_chat_joined', function(data){
 	
 	jQuery('#current_nickname').html(data.current_user_nickname);
 	displayNotification('nearby', 'Now chatting as ' + data.current_user_nickname + '.', 'success');
+	
+	chat_rooms['nearby'].user_entered(data.current_user_nickname);
+	location_client.addMarker(data.current_user_nickname, data.current_user_latitude, data.current_user_longitude);
 });
 
 function joinBuildingChat(building_id){
