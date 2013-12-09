@@ -150,19 +150,22 @@ io.sockets.on('connection', function (socket) {
 	});
 	// update_location(latitude, longitude)
 	socket.on('update_location', function(data){
+		// first, we tell all the users who are displaying a marker for the current_user that the current_user's location has changed
 		user_pool.users_in_range(current_user).forEach(function(user_in_range){
 			user_in_range.socket.emit('user_in_range_location_change', {nickname: current_user.nickname, latitude: data.latitude, longitude: data.longitude});	
 		});
 		
+		// next, we tell all the users who are now out of range, that the current_user is no longer in their range.
 		user_pool.delta_users_out_of_range(current_user, data.latitude, data.longitude).forEach(function(out_of_range_user){
-			// update in range data structure
+			// update adjacency matrix data structure
 			user_pool.users_are_now_out_of_range(current_user.id, out_of_range_user.id);
 			
 			out_of_range_user.socket.emit('user_out_of_range', {nickname: current_user.nickname});	
 		});
 		
+		// last, we tell all the users who are now in range, that the current_user is in their range.
 		user_pool.delta_users_in_range(current_user, data.latitude, data.longitude).forEach(function(in_range_user){
-			// update in range data structure
+			// update adjacency matrix data structure
 			user_pool.users_are_now_in_range(current_user.id, in_range_user.id);
 			
 			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname, latitude: data.latitude, longitude: data.longitude});	
@@ -172,21 +175,24 @@ io.sockets.on('connection', function (socket) {
 	});
 	// update_nickname(nickname, building_id)
 	socket.on('update_nickname', function(data){
+		// if the desired nickname is available
 		if(user_pool.nicknameUnique(data.nickname)){
+			// we tell everyone in current_user's range that current_user's nickname has been updated
 			user_pool.users_in_range(current_user).forEach(function(in_range_user){
 				in_range_user.socket.emit('user_nearby_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname});	
 			});
 			
-			for(var i = 0; i < buildings.length; i++){
-				var building = buildings[i];
-				
+			buildings.forEach(function(building){
+				// if the current_user is in the building
 				if(building.users[current_user.id]){
+					// notify each user in the building that current_user is leaving
 					building.eachUser(function(user_in_building){
 						user_in_building.socket.emit('user_in_building_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname, building_id: i});	
 					});	
 				}
-			}
+			});
 			
+			// we can finally update their nickname
 			current_user.nickname = data.nickname;
 			
 			current_user.socket.emit('nickname_granted', {nickname: data.nickname, building_id: data.building_id});
