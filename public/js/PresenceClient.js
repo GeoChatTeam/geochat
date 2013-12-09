@@ -44,6 +44,9 @@ socket.on('nearby_chat_joined', function(data){
 	for(var i = 0; i < data.locations.length; i++){
 		location_client.addMarker(data.inhabitants[i], data.locations[i].latitude, data.locations[i].longitude);
 	}
+	
+	jQuery('#current_nickname').html(data.current_user_nickname);
+	displayNotification('nearby', 'Now chatting as ' + data.current_user_nickname + '.', 'success');
 });
 
 function joinBuildingChat(building_id){

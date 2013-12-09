@@ -119,18 +119,12 @@ io.sockets.on('connection', function (socket) {
 			in_range_user.socket.emit('user_in_range', {nickname: current_user.nickname, latitude: data.latitude, longitude: data.longitude});	
 		});
 		
+		// we can now update the user's location. we must set this after calling "user_pool.delta_users_in_range".
 		current_user.location = {latitude: data.latitude, longitude: data.longitude};
 		
-		var nicknames = [];
-		var locations = [];
-		user_pool.users_in_range(current_user).forEach(function(iterative_user){
-			nicknames.push(iterative_user.nickname);	
-			locations.push({latitude: iterative_user.getLatitude(), longitude: iterative_user.getLongitude()});
-		});
-		current_user.socket.emit('nearby_chat_joined', {inhabitants: nicknames, locations: locations});
-		
-		current_user.socket.emit('nickname_granted', {nickname: current_user.nickname, building_id: 'nearby'});
-		
+		var nicknames_and_locations = user_pool.nicknames_and_locations_of_nearby_to(current_user)
+		current_user.socket.emit('nearby_chat_joined', {inhabitants: nicknames_and_locations[0], locations: nicknames_and_locations[1], current_user_nickname: current_user.nickname});
+
 		user_pool.users_are_now_in_range(current_user.id, current_user.id);
 		current_user.socket.emit('user_in_range', {nickname: current_user.nickname, latitude: current_user.getLatitude(), longitude: current_user.getLongitude()});
 	});
