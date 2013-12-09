@@ -6,11 +6,14 @@
     "start": "node app.js"
   },
   "dependencies": {
+		"node-gyp": "0.9.6",
     "express": "3.4.0",
+		"connect": "*",
     "ejs": "*",
     "mongodb": "*",
     "monk": "*", 
-    "nodemailer": "*",
-    "geolib": "*"
+    "nodemailer": "0.4.4",
+    "geolib": "*",
+		"socket.io": "*"
   }
 }
