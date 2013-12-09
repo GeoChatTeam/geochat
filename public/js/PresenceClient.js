@@ -61,3 +61,8 @@ function leaveBuildingChat(building_id){
 	chat_rooms[building_id].user_left(jQuery('#current_nickname').html());
 	delete chat_rooms[building_id];
 }
+
+socket.on('disconnect', function(data){
+	alert('This GeoChat session has expired. You may have logged in to GeoChat in another session.');
+	jQuery('body').html('<h2>GeoChat Session Expired</h2>');
+});

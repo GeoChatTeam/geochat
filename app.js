@@ -105,6 +105,10 @@ var mailman = new Mailman(user_pool, buildings);
 io.sockets.on('connection', function (socket) {
 	var session = socket.handshake.session;
 	
+	if(user_pool.find_by_user_id(session.user_id)){
+		user_pool.find_by_user_id(session.user_id).socket.disconnect();
+	}
+	
 	var current_user = new ActiveUser(session.user_id, socket);
 	user_pool.add(current_user);
 
@@ -215,7 +219,7 @@ io.sockets.on('connection', function (socket) {
 	});
 	// disconnect()
 	socket.on('disconnect', function(data){
-		// notify nearby chat
+		// notify nearby chat members
 		user_pool.users_in_range(current_user).forEach(function(nearby_user){
 			nearby_user.socket.emit('user_out_of_range', {nickname: current_user.nickname});	
 		});
@@ -233,7 +237,6 @@ io.sockets.on('connection', function (socket) {
 				delete building.users[current_user.id];
 			}
 		}
-		
 		
 		// remove from user pool
 		delete user_pool.users[current_user.id];
