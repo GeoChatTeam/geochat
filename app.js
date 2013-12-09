@@ -133,7 +133,7 @@ io.sockets.on('connection', function (socket) {
 		// update the building list to include him/her
 		buildings[data.building_id].users[current_user.id] = current_user;
 		
-		current_user.socket.emit('building_chat_joined', {building_id: data.building_id, inhabitants: buldings[data.building_id].nicknames_of_users_in_building});
+		current_user.socket.emit('building_chat_joined', {building_id: data.building_id, inhabitants: buildings[data.building_id].nicknames_of_users_in_building});
 		
 		// get all users in the building
 		buildings[data.building_id].eachUser(function(user_in_building){
