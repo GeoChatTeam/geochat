@@ -1,3 +1,4 @@
+//author: Chris Ciollaro
 // handling sending a nearby message to all
 jQuery(document).on('submit', 'form.textEntry', function(e){
     //gets either 'nearby' or the building_id

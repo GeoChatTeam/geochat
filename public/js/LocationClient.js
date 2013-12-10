@@ -1,3 +1,4 @@
+//Author: Amanda Afonso
 var LocationClient = function(){
 	this.markers = {};
 	this.marker = null;

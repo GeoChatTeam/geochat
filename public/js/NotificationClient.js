@@ -1,3 +1,4 @@
+//author: Chris Ciollaro
 //a convenience function for showing a notification on a chat screen.
 //you can give a message type of success, error, or neutral which styles the notification
 //repeats a lot of the code that displayMessage does, might extract that.

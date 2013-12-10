@@ -1,3 +1,4 @@
+//Author: Chris Ciollaro
 //this is the file responsible for who is in what chat room (including the user)
 //get a socket going.
 var socket = io.connect();

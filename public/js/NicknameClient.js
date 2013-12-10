@@ -1,3 +1,4 @@
+//Author: Chris Ciollaro
 function updateNickname(nickname, building_id){
 	socket.emit('update_nickname', {nickname: nickname, building_id: building_id});
 }

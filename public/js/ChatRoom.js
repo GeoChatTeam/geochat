@@ -1,3 +1,4 @@
+//author: Chris Ciollaro
 //chat room represents the people in a room, and is used for displaying that list.
 //chat_style can be nearby, or a number representing a building_id
 //the array of nicknames are the inhabitants of the room when the user joins the chat room

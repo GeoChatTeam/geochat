@@ -1,3 +1,4 @@
+//Author: Josh Wolfman
 function makeTab(id,name){
     $.ajax({
         url: ('/tab/' + id),
