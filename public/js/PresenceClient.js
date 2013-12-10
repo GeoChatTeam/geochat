@@ -1,3 +1,5 @@
+//this is the file responsible for who is in what chat room (including the user)
+//get a socket going.
 var socket = io.connect();
 
 socket.on('connect', function(data){
@@ -8,21 +10,25 @@ socket.on('error', function(data){
     console.log('unable to connect');
 });
 
+//is a data structure to hold all of the chat rooms that the user is in
 var chat_rooms = {};
-
+//delegates to ChatRoom.js
 socket.on('user_joined_building', function(data){
 	chat_rooms[data.building_id].user_entered(data.nickname);
 });
+//delegates to ChatRoom.js
 
 socket.on('user_left_building', function(data){
 	chat_rooms[data.building_id].user_left(data.nickname);
 });
-
+//delegates to ChatRoom.js
+//adds the user to the map
 socket.on('user_in_range', function(data){
 	chat_rooms['nearby'].user_entered(data.nickname);
 	location_client.addMarker(data.nickname, data.latitude, data.longitude);
 });
-
+//delegates to ChatRoom.js
+//removes the user from the map
 socket.on('user_out_of_range', function(data){
 	chat_rooms['nearby'].user_left(data.nickname);
 	location_client.removeMarker(data.nickname);
@@ -38,7 +44,7 @@ socket.on('building_chat_joined', function(data){
 	chat_rooms[data.building_id] = new ChatRoom(data.building_id, data.inhabitants);
 
 });
-
+//when you join nearby chat, you need to add all of the inhabitants to your map
 socket.on('nearby_chat_joined', function(data){
 	chat_rooms['nearby'] = new ChatRoom('nearby', data.inhabitants);
 	for(var i = 0; i < data.locations.length; i++){

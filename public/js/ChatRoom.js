@@ -1,3 +1,7 @@
+//chat room represents the people in a room, and is used for displaying that list.
+//chat_style can be nearby, or a number representing a building_id
+//the array of nicknames are the inhabitants of the room when the user joins the chat room
+//inhabitants are kept as an object instead of an array for constant time deletion
 var ChatRoom = function(chat_style, array_of_nicknames){
 	this.inhabitants = {};
 	this.chat_style = chat_style;
@@ -9,6 +13,8 @@ var ChatRoom = function(chat_style, array_of_nicknames){
 	this.drawUserList();
 };
 
+//loops through the inhabitants of the chatroom and lists them.
+//this method gets called every time one of the below three methods are called.
 ChatRoom.prototype.drawUserList = function(){
 	jQuery(this.user_list_selector).html('');
 	for(var inhabitant in this.inhabitants){

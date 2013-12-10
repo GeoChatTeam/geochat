@@ -25,7 +25,7 @@ var LocationClient = function(){
 			});
 		}, handleError);
 		
-		//set up watchPosition for infrequent updates
+		//set up watchPosition for updates
 		navigator.geolocation.watchPosition(function(pos){
 			var lat = pos.coords.latitude;
 			var long = pos.coords.longitude;
@@ -37,12 +37,13 @@ var LocationClient = function(){
 			//this might not actually update the map. might need to do:
 			//this.marker.setMap(null);
 			//this.marker.setMap(this.map);
-		}, handleError, {frequency: 300000});  //updates user location every 5 minutes
+		}, handleError);
 	} else {
 		console.log("Geolocation is not supported by this browser.");		
 	}
 }
 
+//a convenience function to add a marker to our map
 LocationClient.prototype.addMarker = function(nickname, latitude, longitude){
 	var position = new google.maps.LatLng(latitude, longitude);
 	this.markers[nickname] = new google.maps.Marker({
@@ -52,16 +53,19 @@ LocationClient.prototype.addMarker = function(nickname, latitude, longitude){
 	});
 }
 
+//remove a marker from our app
 LocationClient.prototype.removeMarker = function(nickname){
 	this.markers[nickname].setMap(null);
 	delete this.markers[nickname];
 }
 
+//relocate a marker. a convenience instead of deleting and creating
 LocationClient.prototype.moveMarker = function(nickname, latitude, longitude){
 	this.removeMarker(nickname);
 	this.addMarker(nickname, latitude, longitude);
 }
 
+//called when a user changes their nickname
 LocationClient.prototype.updateMarkerTitle = function(prev_nickname, new_nickname){
 	this.markers[prev_nickname].setTitle(new_nickname);
 	this.markers[new_nickname] = this.markers[prev_nickname];
@@ -88,6 +92,7 @@ function handleError(error)
 	}
 }
 
+//gets called when the "update location" button is clicked
 LocationClient.prototype.manual_update_listener = function(e){
 	var that = this;
 	if(navigator.geolocation){

@@ -1,8 +1,11 @@
-require 'pry'
+
+#this file basically contains the raw data and turns it into the json file called buildings_complete.json
+
+#got these from a umass website
 names = ["Agricultural Engineering Bldg", "Army ROTC Bldg", "Arnold House", "(Studio) Arts Building", "Auxilary Services Warehouse", "Baker House (offices)", "Bartlett Hall", "Berkshire House", "Berkshire Dining Common", "Blaisdell", "Bowditch Hall", "Bowditch Lodge", "Boyden", "Brett (Offices)", "Campus Center", "Cance (offices)", "Central Heating Plant", "Chancellors House", "Chenoweth Laboratory", "Clark Hall", "(William S.) Clark International Center (Hills)", "Commonwealth Honors College", "Communication Disorders", "Computer Science Bldg", "Condensate Storage Building", "Conte Polymer Center", "Continuing Education", "Curry Hicks", "Dickinson Hall", "Draper Hall", "East Experiment Station", "Engineering Laboratory", "Engineering Laboratory II (E Lab II)", "Faculty Club", "Farley Lodge", "Fernald Hall", "Fine Arts Center (East)", "Fine Arts Center (West)", "Flint Laboratory", "Franklin Dining common ", "French Hall", "Furcolo Hall", "Goessmann Laboratory", "Goodell Bldg", "Goodell Bldg (Graduate School)", "Goodell Bldg (Procurement)", "Gordon Hall", "Gunness Lab", "Hampden Dining Common", "Hampshire Dining Common", "Hampshire House", "Hasbrouck Laboratory", "Hatch Laboratory", "Health Center", "Herter Hall", "Hillel House", "Hills North", "Hills South", "Holdsworth Hall", "Isenberg School of Management", "Integrated Science Building", "John Quincy Adams Tower", "Johnson House (offices)", "Knowles Engineering Bldg", "Lederle Grad Research Ctr (LGRC lowrise)", "Lederle Grad Research Tower (LGRT)", "Life Sciences Laboratories", "Machmer Hall", "Marcus Hall", "Marston Hall", "Mass Ventures", "Mather Building", "Memorial Hall", "Middlesex House", "Montague House", "Morrill 1", "Morrill 2", "Morrill 3", "Morrill 4", "Mullins Center", "Munson Hall", "Nelson House", "Nelson House II", "New Africa House", "Old Chapel", "Paige Laboratory", "Parking Office Trailer", "Parks Marching Band Building", "Photo Center", "Physical Plant", "Police Station", "Recreation Center", "Research Admininstration", "Renaissance Center", "Robsham Visitor's Center", "Shade Trees Laboratory", "Skinner Hall", "Slobody Bldg", "Slobody Bldg", "South College", "Stonewall Center", "Stockbridge Hall", "Student Union", "Thompson Hall", "Thoreau House (offices)", "Tillson House", "Tillson Farm", "Tobin Hall", "Toddler House", "Totman Bldg", "University Bus Garage", "University Press", "University Store", "W.E.B. Du Bois Library", "West Experiment Station", "Whitmore Bldg", "Wilder Hall", "Worcester Dining Commons", "Wysocki House", "Baker Hall", "Birch Hall", "Brett Hall", "Brooks Hall", "Brown Hall", "Butterfield Hall", "Cance Hall", "Cashin Hall", "Chadbourne Hall", "Coolidge Hall", "Crabtree Hall", "Crampton Hall", "Dickinson Hall", "Dwight Hall", "Elm Hall", "Emerson Hall", "Field Hall", "Gorman Hall", "Grayson Hall", "Greenough Hall", "Hamlin Hall", "James Hall", "John Adams Hall", "John Quincy Adams Hall", "Johnson Hall", "Kennedy Hall", "Knowlton Hall", "Leach Hall", "Lewis Hall", "Lincoln Apts", "Linden Hall", "Mackimmie Hall", "Maple Hall", "Mary Lyon Hall", "McNamara Hall", "Melville Hall", "Moore Hall", "North Residence A", "North Residence B", "North Residence C", "North Residence D", "North Village Apts. (family housing)", "Oak Hall", "Patterson Hall", "Pierpont Hall", "Prince Hall", "Sycamore Hall", "Thatcher Hall", "Thoreau Hall", "Van Meter Hall", "Washington Hall", "Webster Hall", "Wheeler Hall"]
-
+#this is not used in the script, I used it on a website that took the addresses and turned them into lat and long
 api_key_mapquest = "Fmjtd%7Cluubn16rn9%2Caw%3Do5-90a5h6"
-
+#also from umass website
 addresses =
 "250 NATURAL RESOURCES RD, AMHERST, MA 01003
 101 COMMONWEALTH AVE, AMHERST, MA 01003
@@ -176,7 +179,7 @@ addresses =
 181 FEARING ST, AMHERST, MA 01003
 141 ORCHARD HILL DR, AMHERST, MA 01003
 171 INFIRMARY WAY, AMHERST, MA 01003"
-
+#from a website that converted the addresses for me
 locations =
 "-72.527971, 42.394359
 -72.53096, 42.385207
@@ -361,6 +364,7 @@ end
 require 'json'
 result = JSON.pretty_generate(buildings)
 
+#create the json and write it into the buildings_complete file
 File.open('./buildings_complete.json', 'w+') do |f|
   f.write(result)
 end
