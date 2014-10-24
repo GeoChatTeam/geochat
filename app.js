@@ -20,7 +20,6 @@ var Mailman = require('./lib/Mailman');
 var Tab=require('./routes/Tab');
 
 var db = require('monk')('localhost/geochatdb'); // this points to the database
-var mail = require('nodemailer').mail;
 
 var EXPRESS_SID_KEY = 'express.sid';
 var COOKIE_SECRET = 'qwerty1234567890';
@@ -51,32 +50,32 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
 // We configure the socket.io authorization handler (handshake)
-io.set('authorization', function (data, callback) {
-    if(!data.headers.cookie) {
-        return callback('No cookie transmitted.', false);
+io.use(function(socket, next) {
+    var req = socket.request;
+    if(!req.headers.cookie) {
+        return next('No cookie transmitted.');
     }
 
     // We use the Express cookieParser created before to parse the cookie
     // Express cookieParser(req, res, next) is used initialy to parse data in "req.headers.cookie".
-    // Here our cookies are stored in "data.headers.cookie", so we just pass "data" to the first argument of function
-    cookieParser(data, {}, function(parseErr) {
-        if(parseErr) { return callback('Error parsing cookies.', false); }
+    cookieParser(req, {}, function(parseErr) {
+        if(parseErr) { return next('Error parsing cookies.'); }
 
         // Get the SID cookie
-        var sidCookie = (data.secureCookies && data.secureCookies[EXPRESS_SID_KEY]) ||
-                        (data.signedCookies && data.signedCookies[EXPRESS_SID_KEY]) ||
-                        (data.cookies && data.cookies[EXPRESS_SID_KEY]);
+        var sidCookie = (req.secureCookies && req.secureCookies[EXPRESS_SID_KEY]) ||
+                        (req.signedCookies && req.signedCookies[EXPRESS_SID_KEY]) ||
+                        (req.cookies && req.cookies[EXPRESS_SID_KEY]);
 
         // Then we just need to load the session from the Express Session Store
         sessionStore.load(sidCookie, function(err, session) {
                 // And last, we check if the used has a valid session and if he is logged in
             if (err || !session || !session.user_id) {
-                callback('Error', false);
+		return next('Error, no user_id in session');
             } else {
                 // If you want, you can attach the session to the handshake data, so you can use it again later
-                data.session = session;
+                socket.handshake.session = session;
 
-                callback(null, true);
+                return next(null);
             }
         });
     });
@@ -94,8 +93,6 @@ app.get('/users', Auth.userList(db));
 app.get('/logOut', Auth.logOut);
 app.get('/tab/:id',Tab.makeTab);
 app.post('/login', Auth.login(db));
-app.post('/register', Auth.register(db, mail));
-app.post('/confirm', Auth.confirmRegister(db));
 
 var user_pool = new UserPool();
 var buildings = Buildings.createAll();
@@ -104,6 +101,8 @@ var mailman = new Mailman(user_pool, buildings);
 //socket things below. there are basically routes.
 io.sockets.on('connection', function (socket) {
 	var session = socket.handshake.session;
+
+	debugger;
 	
 	if(user_pool.find_by_user_id(session.user_id)){
 		user_pool.find_by_user_id(session.user_id).socket.disconnect();

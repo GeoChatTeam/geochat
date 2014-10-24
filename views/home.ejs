@@ -16,18 +16,20 @@
 				<h1>Login form</h1>
 
 				<label>Email
-				<span class="small">Your UMASS email address</span>
+				<span class="small">We won't share this.</span>
 				</label>
 				<input type="text" name="email" id="email" />
 
 				<label>Password</label>
-				<input type="password" name="password" id="login_password" />
+				<input type="password" id="login_password" />
+				<input type="hidden" name="password" id="hash_field" />
 
 				<button id='login_button'>Log in</button>
 				<script>
 					$('#login_button').click(function(){
 						var hash = CryptoJS.SHA1($('#login_password').val());
-						$('#login_password').val(hash);
+						$('#login_password').val("");
+						$('#hash_field').val(hash);
 						$('#login_form').submit();
 					});
 				</script>
@@ -35,55 +37,10 @@
 				<h1 style='color:red'><%= login_err %></h1>
 			</form>
 
-			<hr>
-
-			<form id="register_form" name="form" method="post" action="/register">
-				<h1>Sign-up form</h1>
-
-				<label>Email
-				<span class="small">Add a valid address</span>
-				</label>
-				<input type="text" name="email" id="email" />
-
-				<label>Password
-				<span class="small">Min. size 6 chars</span>
-				</label>
-				<input type="password" name="password" id="register_password1" />
-
-				<label>Confirm Password
-				<span class="small">Min. size 6 chars</span>
-				</label>
-				<input type="password" name="password2" id="register_password2" />
-
-				<button id='register_button'>Sign-up</button>
-				<script>
-					$('#register_button').click(function(){
-						if ($('#register_password1').val().length >= 6 && $('#register_password2').val().length >= 6) { // hashing will ask that the passwords are too short
-							var hash1 = CryptoJS.SHA1($('#register_password1').val());
-							var hash2 = CryptoJS.SHA1($('#register_password2').val());
-							$('#register_password1').val(hash1);
-							$('#register_password2').val(hash2);
-						}
-						$('#register_form').submit();
-					});
-					jQuery('#email').focus();
-				</script>
-				<div class="spacer"></div>
-				<h1 style='color:red'><%= reg_err %></h1>
-			</form>
+			<p>
+				Enter your email and password above. There is no email verification and your password is never sent over the network. If there exists no account with the specified email address, one will be created.
+			</p>
 		</div>
-
-		<form method="post" action="/login">
-			<input type="hidden" name="email" value="developer1@umass.edu"/>
-			<input type="hidden" name="password" value=""/>
-			<input type="submit" value="Login Dev1"/>
-		</form>
-		<form method="post" action="/login">
-			<input type="hidden" name="email" value="developer2@umass.edu"/>
-			<input type="hidden" name="password" value=""/>
-			<input type="submit" value="Login Dev2"/>
-		</form>
-
 	</body>
 
 </html>
