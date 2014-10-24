@@ -1,5 +1,6 @@
 //Author: Chris Ciollaro
 //this is the file responsible for who is in what chat room (including the user)
+
 //get a socket going.
 var socket = io.connect();
 
@@ -70,6 +71,5 @@ function leaveBuildingChat(building_id){
 }
 
 socket.on('disconnect', function(data){
-	alert('This GeoChat session has expired. You may have logged in to GeoChat in another session.');
-	jQuery('body').html('<h2>GeoChat Session Expired</h2>');
+	console.log("disconnect");
 });

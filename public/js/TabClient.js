@@ -30,7 +30,7 @@ jQuery(document).on('click', '#roomList li', function(e){
 
 jQuery(document).on('click','.close',function(){
 	var building_id = jQuery(this).data("id");
+	leaveBuildingChat(building_id);
 	removeTab(building_id);
 	jQuery('#roomList li[data-id="'+ building_id+'"]').show();
-	leaveBuildingChat(building_id);
 });
