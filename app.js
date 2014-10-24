@@ -2,7 +2,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var app = express();
-app.set('port', 3000);
+app.set('port', 4000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
@@ -101,8 +101,6 @@ var mailman = new Mailman(user_pool, buildings);
 //socket things below. there are basically routes.
 io.sockets.on('connection', function (socket) {
 	var session = socket.handshake.session;
-
-	debugger;
 	
 	if(user_pool.find_by_user_id(session.user_id)){
 		user_pool.find_by_user_id(session.user_id).socket.disconnect();
@@ -132,7 +130,7 @@ io.sockets.on('connection', function (socket) {
 		// update the building list to include him/her
 		buildings[data.building_id].users[current_user.id] = current_user;
 		
-		current_user.socket.emit('building_chat_joined', {building_id: data.building_id, inhabitants: buildings[data.building_id].nicknames_of_users_in_building});
+		current_user.socket.emit('building_chat_joined', {building_id: data.building_id, inhabitants: buildings[data.building_id].nicknames_of_users_in_building()});
 		
 		// get all users in the building
 		buildings[data.building_id].eachUser(function(user_in_building){
@@ -190,7 +188,7 @@ io.sockets.on('connection', function (socket) {
 				if(building.users[current_user.id]){
 					// notify each user in the building that current_user is leaving
 					building.eachUser(function(user_in_building){
-						user_in_building.socket.emit('user_in_building_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname, building_id: i});	
+						user_in_building.socket.emit('user_in_building_nickname_updated', {prev_nickname: current_user.nickname, new_nickname: data.nickname, building_id: building.id});	
 					});	
 				}
 			});

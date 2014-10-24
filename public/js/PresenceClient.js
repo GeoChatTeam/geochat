@@ -4,11 +4,11 @@
 var socket = io.connect();
 
 socket.on('connect', function(data){
-    console.log('connected');
+    console.log('socket connected');
 });
 
 socket.on('error', function(data){
-    console.log('unable to connect');
+    console.log('socket unable to connect');
 });
 
 //is a data structure to hold all of the chat rooms that the user is in
